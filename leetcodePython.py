@@ -360,6 +360,8 @@ class Solution:
         :type num: int
         :rtype: int
         """
+        # One liner:
+        # return (num if num == 0 else (9 if num % 9 == 0 else num % 9))
         
         while(len(str(num)) > 1):
             # This takes a number, converts it into a string
