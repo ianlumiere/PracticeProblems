@@ -374,3 +374,62 @@ class Solution:
             num = sum(digits)
         
         return num
+
+# The Hamming distance between two integers is the number of positions at which the corresponding bits are different.
+
+# Given two integers x and y, calculate the Hamming distance.
+
+# Note:
+# 0 ≤ x, y < 231.
+
+# Example:
+
+# Input: x = 1, y = 4
+
+# Output: 2
+
+# Explanation:
+# 1   (0 0 0 1)
+# 4   (0 1 0 0)
+#        ↑   ↑
+
+# The above arrows point to positions where the corresponding bits are different.
+
+class Solution:
+    def hammingDistance(self, x, y):
+        """
+        :type x: int
+        :type y: int
+        :rtype: int
+        """
+        
+        # Convert the numbers into binary and then a string
+        xBin = str(bin(x))
+        yBin = str(bin(y))
+        
+        # Get the shorter number and call the helper
+        if len(xBin) < len(yBin):
+            answer = hammingHelper(xBin, yBin)
+        else:
+            answer = hammingHelper(yBin, xBin)
+            
+        return answer # O(n) where n is the larger binary number
+            
+def hammingHelper(shorter, longer):
+    differentBits = 0
+
+    shortTracker = len(shorter)-1
+    longTracker = len(longer)-1
+    
+    while(longTracker > 1):
+        if shortTracker > 1:
+            if shorter[shortTracker] != longer[longTracker]:
+                differentBits += 1
+        elif longer[longTracker] == '1':
+            differentBits += 1
+
+        shortTracker -= 1
+        longTracker -= 1
+
+    return differentBits
+        
