@@ -432,4 +432,33 @@ def hammingHelper(shorter, longer):
         longTracker -= 1
 
     return differentBits
+
+# Write a loop that returns all of the pairs of numbers that equal the sum argument. Do it in O(n)
+
+# data = [1,2,3,4,5,7,10]
+# num = 8
+
+# print(sumPairs(num, data))
+# outputs [[3,5], [1,7]]
+
+def sumPairs(num, data):
+    # num is the sum you are looking for
+    # data is the list of numbers that you are comparing
+    
+    checked = {}
+    answers = []
+    
+    for i in data:
+        # if the difference is in the hash, then you can make the sum, so add it to the answer pairs
+        if (num - i) in checked:
+            answers.append([checked[num-i], i])
+        
+        # Add the number to the hash if it is not already in there
+        if i not in checked:
+            checked[i] = i
+            
+    return answers
+
+
+    
         
