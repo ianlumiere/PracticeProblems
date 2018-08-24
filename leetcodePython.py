@@ -509,4 +509,5 @@ class Solution:
             else:
                 transformations[translatedWord] += 1
         
-        return len(transformations) # You can also return the number of times a transformation appears
+        # You can also return the number of times a transformation appears
+        return len(transformations) # O(nm)
