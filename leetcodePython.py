@@ -492,7 +492,7 @@ class Solution:
 
         
         # create a hash for the words to store the count that they appear in
-        transformations = {}
+        transformations = {} # use a hash because has lookup is O(1) vs checking a whole array which is O(n)
         
         for i in words:
             # translate i to morse code
