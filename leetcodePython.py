@@ -564,3 +564,73 @@ class Solution:
             
         return answer # O(n)
  
+# Num Chimes
+
+# 24 element array
+def numChimes(hour1, hour2):
+    # 24 element array with 0 in each slot
+    hourStruck = []
+    
+    for i in range(0, 25):
+        hourStruck.append(0)
+    
+    if hour2 < hour1:
+        hour2 = hour2 + 24
+    
+    # hour1 = 23
+    # hour2 = 1 + 24 = 25
+    
+    for i in range(hour1, hour2+1):
+        if i > 24:
+            hourStruck[i-24] = i-24
+        else:
+            if i > 12:
+                hourStruck[i] = i-12
+            else:
+                hourStruck[i] = i        
+        
+    # sum hourStruck and return it
+    # hoursStruck = [1:1, 23:11, 24:12] = 24
+    print(hourStruck)
+    return sum(hourStruck)
+
+# check intersection 
+def func(list1 list2):
+    # get what numbers they have in common
+    # they are not sorted
+    # O(n log n) Merge sort
+    # nested for loop is brute, O(n^2)
+    
+    # declare a new array for the intersection or remove values
+        
+    # look at the shorter list
+    
+    # list1 = [7,3,4,5,10348294]
+    
+    # list2 = [9,5,6,7,8]
+    
+    # hashA[0,0,0,0,1,2,1,0,10348294] # bad solution because of large numbers
+    # hashD{7:2, 3:1, 10348294:1, 9:1} # use a dictionary instead, this is O(n)
+    
+    # answer[5,]
+    # iterate list1 then list2 and identify keys that have value of 2
+    
+# Next Prime
+def next_prime(n):
+    i = n + 1
+    prime = False
+    
+    while(prime is False):
+        prime = True
+        
+        for k in range(2, i): # go to sqrt or check bigger divisors
+            if i % k == 0:
+                prime = False
+                break
+                
+        if prime is True:
+            answer = i
+            
+        i+=1
+    
+    return answer # next prime after n
