@@ -634,3 +634,38 @@ def next_prime(n):
         i+=1
     
     return answer # next prime after n
+
+# Output words of change due based on an input like "12.34;100.35"
+
+import sys
+
+for line in sys.stdin:    
+    inputs = line.split(";")
+    pp = float(inputs[0])
+    ch = float(inputs[1])
+    values = [100, 50, 20, 10, 5, 2, 1, .5, .25, .1, .05, .01]
+    dollars = ["ONE HUNDRED", "FIFTY", "TWENTY", "TEN", "FIVE", "TWO", "ONE", "HALF DOLLAR", "QUARTER", "DIME", "NICKEL", "PENNY"]
+    outputChange = []
+        
+    if ch < pp:
+        print("ERROR")
+    
+    elif ch == pp:
+        print("ZERO")
+    
+    else:
+        change = round(ch - pp, 2)
+        
+        count = 0
+        
+        for i in values:
+            while (change - i) >= 0:
+                change = change - i
+                outputChange.append(dollars[count]) # Skips PENNY for some reason
+                
+            count = count + 1
+    
+        listWords = sorted(outputChange)
+        answer = ','.join(listWords)
+    
+        print(answer)
