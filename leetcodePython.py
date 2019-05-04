@@ -669,3 +669,24 @@ for line in sys.stdin:
         answer = ','.join(listWords)
     
         print(answer)
+
+# Return the first word in a sentence that is the longest even word. 
+# Ex: "The dog ran fast through the park" would return "fast".
+# Return "00" if there are no even words
+
+def longestEvenWord(sentence):
+    sentenceList = sentence.split(" ")
+    longest = 0
+    found = False
+    
+    for i in sentenceList:
+        if len(i) > longest and len(i) % 2 == 0:
+            answer = i
+            found = True
+            longest = len(i)
+    
+    if found is False:
+        return "00"
+    else:
+        return answer
+   
