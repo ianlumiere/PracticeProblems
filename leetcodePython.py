@@ -690,3 +690,18 @@ def longestEvenWord(sentence):
     else:
         return answer
    
+# Employees per department
+
+# A company stores EE and Dept info in two tables: employee and department. Write a query to print the respective department name
+# and number of employees in each department (even ones with no employees). Sort the results by descending order of the number
+# of employees; if two ore more are tied, sort alpgabetically by dept name.
+# Each row must have the name of the department and the number of employees in it
+
+SELECT
+    d.name,
+    COUNT(e.id) AS num_ee
+FROM department d
+LEFT JOIN employee e on d.id = e.dept_id
+GROUP BY d.name
+ORDER BY num_ee DESC, d.name
+
