@@ -705,3 +705,25 @@ LEFT JOIN employee e on d.id = e.dept_id
 GROUP BY d.name
 ORDER BY num_ee DESC, d.name
 
+# Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.
+
+# Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        lookforward_index = 1
+        i = 0
+        
+        if len(nums) == 0:
+            return 0
+        elif len(nums) == 1:
+            return 1
+        
+        while i != len(nums)-1:
+            if nums[lookforward_index] == nums[i]:
+                del nums[lookforward_index]
+            else:
+                lookforward_index = lookforward_index + 1
+                i = i + 1
+        
+        return len(nums)
