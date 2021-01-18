@@ -38,7 +38,7 @@
 # }
 
 
-class Solution:
+class SolutionRemoveElement:
     def removeElement(self, nums, val):
         """
         :type nums: List[int]
@@ -60,7 +60,7 @@ class Solution:
 
 # The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
 
-class Solution:
+class SolutionMaxArea:
     def maxArea(self, height):
         """
         :type height: List[int]
@@ -94,7 +94,7 @@ class Solution:
 #         self.val = x
 #         self.next = None
 
-class Solution:
+class SolutionMergeTwoLists:
     def mergeTwoLists(self, l1, l2):
         """
         :type l1: ListNode
@@ -150,7 +150,7 @@ class Solution:
 # All heights grid[i][j] are in the range [0, 100].
 # All buildings in grid[i][j] occupy the entire grid cell: that is, they are a 1 x 1 x grid[i][j] rectangular prism.
 
-class Solution:
+class SolutionMaxIncreaseKeepingSkyline:
     def maxIncreaseKeepingSkyline(self, grid):
         """
         :type grid: List[List[int]]
@@ -196,7 +196,7 @@ class Solution:
                     
 # Implement function ToLowerCase() that has a string parameter str, and returns the same string in lowercase.
 
-class Solution:
+class SolutionToLowerCase:
     def toLowerCase(self, str):
         """
             :type str: str
@@ -232,7 +232,7 @@ class Solution:
 # S and J will consist of letters and have length at most 50.
 # The characters in J are distinct.
 
-class Solution:
+class SolutionNumJewelsInStones:
     def numJewelsInStones(self, J, S):
         """
         :type J: str
@@ -267,7 +267,7 @@ class Solution:
 # Space complexity should be O(n).
 # Can you do it like a boss? Do it without using any builtin function like __builtin_popcount in c++ or in any other language.
 
-class Solution:
+class SolutionCountBits:
     def countBits(self, num):
         """
         :type num: int
@@ -323,7 +323,7 @@ class Solution:
 #     "FizzBuzz"
 # ]
 
-class Solution:
+class SolutionFizzBuzz:
     def fizzBuzz(self, n):
         """
         :type n: int
@@ -354,7 +354,7 @@ class Solution:
 # Follow up:
 # Could you do it without any loop/recursion in O(1) runtime?
 
-class Solution:
+class SolutionAddDigits:
     def addDigits(self, num):
         """
         :type num: int
@@ -395,7 +395,7 @@ class Solution:
 
 # The above arrows point to positions where the corresponding bits are different.
 
-class Solution:
+class SolutionHammingDistance:
     def hammingDistance(self, x, y):
         """
         :type x: int
@@ -480,7 +480,7 @@ def sumPairs(num, data):
 
 # There are 2 different transformations, "--...-." and "--...--.".
 
-class Solution:
+class SolutionUniqueMorseRepresentations:
     def uniqueMorseRepresentations(self, words):
         """
         :type words: List[str]
@@ -530,7 +530,7 @@ class Solution:
 # Note:
 # Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [−231,  231 − 1]. For the purpose of this problem, assume that your function returns 0 when the reversed integer overflows.
 
-class Solution:
+class SolutionReverse:
     def reverse(self, x: int) -> int:
         if x > (2**31 - 1):
             return 0
@@ -595,7 +595,7 @@ def numChimes(hour1, hour2):
     return sum(hourStruck)
 
 # check intersection 
-def func(list1 list2):
+def func(list1, list2):
     # get what numbers they have in common
     # they are not sorted
     # O(n log n) Merge sort
@@ -614,6 +614,7 @@ def func(list1 list2):
     
     # answer[5,]
     # iterate list1 then list2 and identify keys that have value of 2
+    pass
     
 # Next Prime
 def next_prime(n):
@@ -639,36 +640,37 @@ def next_prime(n):
 
 import sys
 
-for line in sys.stdin:    
-    inputs = line.split(";")
-    pp = float(inputs[0])
-    ch = float(inputs[1])
-    values = [100, 50, 20, 10, 5, 2, 1, .5, .25, .1, .05, .01]
-    dollars = ["ONE HUNDRED", "FIFTY", "TWENTY", "TEN", "FIVE", "TWO", "ONE", "HALF DOLLAR", "QUARTER", "DIME", "NICKEL", "PENNY"]
-    outputChange = []
+def change_due():
+    for line in sys.stdin:    
+        inputs = line.split(";")
+        pp = float(inputs[0])
+        ch = float(inputs[1])
+        values = [100, 50, 20, 10, 5, 2, 1, .5, .25, .1, .05, .01]
+        dollars = ["ONE HUNDRED", "FIFTY", "TWENTY", "TEN", "FIVE", "TWO", "ONE", "HALF DOLLAR", "QUARTER", "DIME", "NICKEL", "PENNY"]
+        outputChange = []
+            
+        if ch < pp:
+            print("ERROR")
         
-    if ch < pp:
-        print("ERROR")
-    
-    elif ch == pp:
-        print("ZERO")
-    
-    else:
-        change = round(ch - pp, 2)
+        elif ch == pp:
+            print("ZERO")
         
-        count = 0
+        else:
+            change = round(ch - pp, 2)
+            
+            count = 0
+            
+            for i in values:
+                while (change - i) >= 0:
+                    change = change - i
+                    outputChange.append(dollars[count]) # Skips PENNY for some reason
+                    
+                count = count + 1
         
-        for i in values:
-            while (change - i) >= 0:
-                change = change - i
-                outputChange.append(dollars[count]) # Skips PENNY for some reason
-                
-            count = count + 1
-    
-        listWords = sorted(outputChange)
-        answer = ','.join(listWords)
-    
-        print(answer)
+            listWords = sorted(outputChange)
+            answer = ','.join(listWords)
+        
+            print(answer)
 
 # Return the first word in a sentence that is the longest even word. 
 # Ex: "The dog ran fast through the park" would return "fast".
@@ -697,20 +699,21 @@ def longestEvenWord(sentence):
 # of employees; if two ore more are tied, sort alpgabetically by dept name.
 # Each row must have the name of the department and the number of employees in it
 
-SELECT
-    d.name,
-    COUNT(e.id) AS num_ee
-FROM department d
-LEFT JOIN employee e on d.id = e.dept_id
-GROUP BY d.name
-ORDER BY num_ee DESC, d.name
+# SELECT
+#     d.name,
+#     COUNT(e.id) AS num_ee
+# FROM department d
+# LEFT JOIN employee e on d.id = e.dept_id
+# GROUP BY d.name
+# ORDER BY num_ee DESC, d.name
 
 # Given a sorted array nums, remove the duplicates in-place such that each element appear only once and return the new length.
 
 # Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
 
-class Solution:
-    def removeDuplicates(self, nums: List[int]) -> int:
+class SolutionRemoveDuplicates:
+    # nums is a list
+    def removeDuplicates(self, nums) -> int:
         lookforward_index = 1
         i = 0
         
@@ -746,19 +749,20 @@ class Solution:
 #N is an integer within the range [1..100,000];
 #each element of array A is an integer within the range [−1,000,000..1,000,000].
 
-def solution(A):
-    smallest = 1
-    A.sort()
-    
-    for i in A:
-        if i <= 0:
-            pass
-        elif i <= smallest:
-            smallest = i + 1
-        else:
-            return smallest
-    
-    return smallest
+class SolutionReturnSmallestPositive:
+    def solution(A):
+        smallest = 1
+        A.sort()
+        
+        for i in A:
+            if i <= 0:
+                pass
+            elif i <= smallest:
+                smallest = i + 1
+            else:
+                return smallest
+        
+        return smallest
 
 #The Employee table holds all employees including their managers. Every employee has an Id, and there is also a column for the manager Id.
 
@@ -778,10 +782,10 @@ def solution(A):
 # | Joe      |
 # +----------+
 
-SELECT
-    e.name AS "Employee"  # I added the name to satisfy one of the requirements, but it is not necessary
-FROM employee e
-INNER JOIN employee m on e.managerId = m.id  # join the table on itself for all ees that have managers
-WHERE e.managerId IS NOT NULL
-    and e.salary > m.salary
+# SELECT
+#     e.name AS "Employee"  # I added the name to satisfy one of the requirements, but it is not necessary
+# FROM employee e
+# INNER JOIN employee m on e.managerId = m.id  # join the table on itself for all ees that have managers
+# WHERE e.managerId IS NOT NULL
+#     and e.salary > m.salary
 
