@@ -750,7 +750,7 @@ class SolutionRemoveDuplicates:
 #each element of array A is an integer within the range [−1,000,000..1,000,000].
 
 class SolutionReturnSmallestPositive:
-    def solution(A):
+    def solution(self, A):
         smallest = 1
         A.sort()
         
@@ -789,3 +789,56 @@ class SolutionReturnSmallestPositive:
 # WHERE e.managerId IS NOT NULL
 #     and e.salary > m.salary
 
+
+# Write a function to find the longest common prefix string amongst an array of strings.
+
+# If there is no common prefix, return an empty string "".
+
+# Example 1:
+
+# Input: strs = ["flower","flow","flight"]
+# Output: "fl"
+# Example 2:
+
+# Input: strs = ["dog","racecar","car"]
+# Output: ""
+# Explanation: There is no common prefix among the input strings.
+
+# Constraints:
+
+# 0 <= strs.length <= 200
+# 0 <= strs[i].length <= 200
+# strs[i] consists of only lower-case English letters.
+
+class SolutionLongestCommonPrefix:
+    def longestCommonPrefix(self, strs) -> str:
+        if len(strs) == 0:
+            return ""
+        
+        # sort the list based off of word length
+        strs.sort(key=len)
+        shortest_str = strs.pop(0) # remove the front of the list and store it
+        common_prefix = ""
+        
+        number_to_check = len(strs)
+        
+        # only need to iterate as far as the shortest word
+        for index, letter in enumerate(shortest_str):
+            words_passed = 0
+            for word in strs:
+                if word[index] == letter:
+                    print(letter)
+                    words_passed += 1
+            
+            # if every word did not pass then the common prefix ends
+            # otherwise, add it to the prefix and continue the loop
+            if words_passed == number_to_check:
+                common_prefix += letter
+            else:
+                if index == 0:
+                    common_prefix = ""
+                break
+            
+        return common_prefix
+                
+                
