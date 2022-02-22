@@ -101,51 +101,50 @@ MySQL Operators
 Symbol | Function |
 --- | --- |
 `>` | Greater than operator
-`>>` | Right shift		
-`>=`	    Greater than or equal operator		
-`<`	        Less than operator		
-`<>`, `!=`	Not equal operator		
-`<<`	    Left shift		
-`<=`	    Less than or equal operator		
-`<=>`	    NULL-safe equal to operator		
-`%`, `MOD`	Modulo operator		
-`*`	        Multiplication operator		
-`+`	        Addition operator		
-`-`	        Minus operator		
-`-`	        Change the sign of the argument		
-`->`	    Return value from JSON column after evaluating path; equivalent to JSON_EXTRACT().		
-`->>`	    Return value from JSON column after evaluating path and unquoting the result; equivalent to JSON_UNQUOTE(JSON_EXTRACT()).		
-`/`	        Division operator		
-`:=`	    Assign a value		
-`=`	        Assign a value (as part of a SET statement, or as part of the SET clause in an UPDATE statement)		
-`=`	        Equal operator		
-`^`	        Bitwise XOR		
-`AND`, `&&`	Logical AND		
-BETWEEN ... AND ...	Whether a value is within a range of values		
-BINARY	Cast a string to a binary string		8.0.27
-CASE	Case operator		
-DIV	Integer division		
-IN()	Whether a value is within a set of values		
-IS	Test a value against a boolean		
-IS NOT	Test a value against a boolean		
-IS NOT NULL	NOT NULL value test		
-IS NULL	NULL value test		
-LIKE	Simple pattern matching		
-MEMBER OF()	Returns true (1) if first operand matches any element of JSON array passed as second operand, otherwise returns false (0)	8.0.17	
-NOT, !	Negates value		
-NOT BETWEEN ... AND ...	Whether a value is not within a range of values		
-NOT IN()	Whether a value is not within a set of values		
-NOT LIKE	Negation of simple pattern matching		
-NOT REGEXP	Negation of REGEXP		
-OR, ||	Logical OR		
-REGEXP	Whether string matches regular expression		
-RLIKE	Whether string matches regular expression		
-SOUNDS LIKE	Compare sounds		
-XOR	Logical XOR		
-
-`&`	        Bitwise AND		
-|	Bitwise OR		
-~	Bitwise inversion
+`>=` |	    Greater than or equal operator
+`>=` |	    Greater than or equal operator		
+`<`	  |      Less than operator		
+`<>`, `!=` |	Not equal operator
+`<=`	|    Less than or equal operator		
+`<=>`	 |   NULL-safe equal to operator	
+`+`	       | Addition operator		
+`-`	       | Minus operator		
+`-`	       | Change the sign of the argument			
+`*`	       | Multiplication operator
+`/`	   |     Division operator				
+`DIV` |	Integer division
+`%`, `MOD` |	Modulo operator				
+`:=`	|    Assign a value		
+`=`	     |   Assign a value (as part of a SET statement, or as part of the SET clause in an UPDATE statement)		
+`=`	      |  Equal operator		
+`AND`, `&&` |	Logical AND	
+`OR`, `||` |	Logical OR	
+`XOR` |	Logical XOR	
+`IS` |	Test a value against a boolean		
+`IS NOT` |	Test a value against a boolean		
+`IS NOT NULL`, `NOT NULL` | value test		
+`IS NULL`, `NULL` | value test		
+`NOT`, `!` |	Negates value
+`LIKE` |	Simple pattern matching	
+`NOT LIKE` |	Negation of simple pattern matching	
+`BETWEEN ... AND ...` |	Whether a value is within a range of values			
+`NOT BETWEEN ... AND ...` |	Whether a value is not within a range of values		
+`CASE` |	Case operator
+`BINARY` |	Cast a string to a binary string				
+`IN()` |	Whether a value is within a set of values	
+`NOT IN()` |	Whether a value is not within a set of values		
+`MEMBER OF()` |	Returns true (1) if first operand matches any element of JSON array passed as second operand, otherwise returns false (0)
+`->`	|    Return value from JSON column after evaluating path; equivalent to JSON_EXTRACT().		
+`->>`	 |   Return value from JSON column after evaluating path and unquoting the result; equivalent to JSON_UNQUOTE(JSON_EXTRACT()).
+`>>` | Right shift				
+`<<`	|    Left shift	
+`&`	     |   Bitwise AND		
+`|` |	Bitwise OR		
+`^`	 |       Bitwise XOR	
+`~` |	Bitwise inversion
+`NOT REGEXP` |	Negation of REGEXP			
+`REGEXP` |	Whether string matches regular expression		
+`RLIKE` |	Whether string matches regular expression	
 
 ### WHERE vs HAVING
 
