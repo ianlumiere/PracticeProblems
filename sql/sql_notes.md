@@ -99,10 +99,9 @@ ORDER BY prod_price DESC, prod_name; -- this will sort first by prod_price from 
 
 MySQL Operators
 Symbol | Function |
-- | - |
-`>`|   Greater than operator
-		
-`>>`	    Right shift		
+--- | --- |
+`>` | Greater than operator
+`>>` | Right shift		
 `>=`	    Greater than or equal operator		
 `<`	        Less than operator		
 `<>`, `!=`	Not equal operator		
