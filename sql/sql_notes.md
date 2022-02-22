@@ -139,7 +139,7 @@ Symbol | Function |
 `>>` | Right shift				
 `<<`	|    Left shift	
 `&`	     |   Bitwise AND		
-`|` |	Bitwise OR		
+`\|` |	Bitwise OR		
 `^`	 |       Bitwise XOR	
 `~` |	Bitwise inversion
 `NOT REGEXP` |	Negation of REGEXP			
