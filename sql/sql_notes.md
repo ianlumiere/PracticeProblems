@@ -15,6 +15,35 @@
     - PKs should never be modified or updated
     - PK values should never be reused (if a row is deleted, its PK may NOT be assigned to a new row in the future)
 
+## Keywords
+
+- SELECT
+- DISTINCT
+- CASE WHEN
+- FROM
+- WHERE
+- INNER JOIN
+- LEFT JOIN
+- RIGHT JOIN
+- FULL JOIN???????
+- GROUP BY
+- ORDERY BY
+- LIMIT OFFSET
+
+## Super Query
+
+```
+SELECT
+    id,
+    price,
+    name
+FROM Products
+WHERE
+    price >= 5.49
+ORDER BY price DESC, name
+LIMIT 5, 2
+```
+
 ## SELECT
 
 Main purpose is to retrieve information from one or more tables. Data will always be returned in no order of any significance.
@@ -66,7 +95,59 @@ FROM Products
 ORDER BY prod_price DESC, prod_name; -- this will sort first by prod_price from highest price to lowest, then prod_name for any ties on price from A-Z
 ```
 
-## WHERE and HAVING
+## WHERE
+
+MySQL Operators
+Symbol | Function |
+------- | ------- |
+`>`	     |   Greater than operator		
+`>>`	    Right shift		
+`>=`	    Greater than or equal operator		
+`<`	        Less than operator		
+`<>`, `!=`	Not equal operator		
+`<<`	    Left shift		
+`<=`	    Less than or equal operator		
+`<=>`	    NULL-safe equal to operator		
+`%`, `MOD`	Modulo operator		
+`*`	        Multiplication operator		
+`+`	        Addition operator		
+`-`	        Minus operator		
+`-`	        Change the sign of the argument		
+`->`	    Return value from JSON column after evaluating path; equivalent to JSON_EXTRACT().		
+`->>`	    Return value from JSON column after evaluating path and unquoting the result; equivalent to JSON_UNQUOTE(JSON_EXTRACT()).		
+`/`	        Division operator		
+`:=`	    Assign a value		
+`=`	        Assign a value (as part of a SET statement, or as part of the SET clause in an UPDATE statement)		
+`=`	        Equal operator		
+`^`	        Bitwise XOR		
+`AND`, `&&`	Logical AND		
+BETWEEN ... AND ...	Whether a value is within a range of values		
+BINARY	Cast a string to a binary string		8.0.27
+CASE	Case operator		
+DIV	Integer division		
+IN()	Whether a value is within a set of values		
+IS	Test a value against a boolean		
+IS NOT	Test a value against a boolean		
+IS NOT NULL	NOT NULL value test		
+IS NULL	NULL value test		
+LIKE	Simple pattern matching		
+MEMBER OF()	Returns true (1) if first operand matches any element of JSON array passed as second operand, otherwise returns false (0)	8.0.17	
+NOT, !	Negates value		
+NOT BETWEEN ... AND ...	Whether a value is not within a range of values		
+NOT IN()	Whether a value is not within a set of values		
+NOT LIKE	Negation of simple pattern matching		
+NOT REGEXP	Negation of REGEXP		
+OR, ||	Logical OR		
+REGEXP	Whether string matches regular expression		
+RLIKE	Whether string matches regular expression		
+SOUNDS LIKE	Compare sounds		
+XOR	Logical XOR		
+
+`&`	        Bitwise AND		
+|	Bitwise OR		
+~	Bitwise inversion
+
+### WHERE vs HAVING
 
 WHERE Clause is used to filter the records from the table or used while joining more than one table.Only those records will be extracted who are satisfying the specified condition in WHERE clause. WHERE can be used in SELECT, UPDATE, and DELETE. 
 
