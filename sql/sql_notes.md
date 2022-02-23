@@ -15,11 +15,45 @@
     - PKs should never be modified or updated
     - PK values should never be reused (if a row is deleted, its PK may NOT be assigned to a new row in the future)
 
+## Keywords
+
+- SELECT
+- DISTINCT
+- CASE WHEN
+- FROM
+- WHERE
+- INNER JOIN
+- LEFT JOIN
+- RIGHT JOIN
+- FULL JOIN???????
+- GROUP BY
+- ORDERY BY
+- LIMIT OFFSET
+
+## Super Query
+
+```
+SELECT
+    id,
+    price,
+    name
+FROM Products
+WHERE
+    (price >= 5.49 OR
+    price BETWEEN 1 AND 3) AND
+    name != 'cherry' AND
+    name IS NOT NULL XOR
+    id NOT IN (0, 1, 2) AND
+    name LIKE '%card_' -- This would get 'pokemon cards', but not 'pokemon card'
+ORDER BY price DESC, name
+LIMIT 5, 2
+```
+
 ## SELECT
 
 Main purpose is to retrieve information from one or more tables. Data will always be returned in no order of any significance.
 
-### DISTINCT
+#### DISTINCT
 
 Only returns rows with distinct values. Applies to all named columns, not just the one it preceeds.
 
@@ -30,7 +64,7 @@ SELECT
 FROM Products;
 ```
 
-### LIMIT and OFFSET
+#### LIMIT and OFFSET
 
 You can use LIMIT to say how many rows you want max and OFFSET to tell it where to start. 
 In MySQL, you can shorten it to `LIMIT 5, 3` where the OFFSET here would be 3.
@@ -66,7 +100,60 @@ FROM Products
 ORDER BY prod_price DESC, prod_name; -- this will sort first by prod_price from highest price to lowest, then prod_name for any ties on price from A-Z
 ```
 
-## WHERE and HAVING
+## WHERE
+
+Use single quotes to delimit strings, not double quotes. Processes AND operators before OR operators
+
+#### MySQL Operators
+Symbol | Function |
+--- | --- |
+`>` | Greater than operator
+`>=` |	    Greater than or equal operator
+`>=` |	    Greater than or equal operator		
+`<`	  |      Less than operator		
+`=`	      |  Equal operator	
+`<>`, `!=` |	Not equal operator
+`<=`	|    Less than or equal operator		
+`<=>`	 |   NULL-safe equal to operator	
+`+`	       | Addition operator		
+`-`	       | Minus operator		
+`-`	       | Change the sign of the argument			
+`*`	       | Multiplication operator
+`/`	   |     Division operator				
+`DIV` |	Integer division
+`%`, `MOD` |	Modulo operator				
+`:=`	|    Assign a value		
+`=`	     |   Assign a value (as part of a SET statement, or as part of the SET clause in an UPDATE statement)			
+`AND`, `&&` |	Logical AND	
+`OR`, `||` |	Logical OR	
+`XOR` |	Logical XOR	
+`IS` |	Test a value against a boolean		
+`IS NOT` |	Test a value against a boolean		
+`IS NOT NULL`, `NOT NULL` | value test		
+`IS NULL`, `NULL` | value test		
+`NOT`, `!` |	Negates value
+`LIKE` |	Simple pattern matching	
+`NOT LIKE` |	Negation of simple pattern matching	
+`BETWEEN ... AND ...` |	Whether a value is within a range of values			
+`NOT BETWEEN ... AND ...` |	Whether a value is not within a range of values		
+`CASE` |	Case operator
+`BINARY` |	Cast a string to a binary string				
+`IN()` |	Whether a value is within a set of values	
+`NOT IN()` |	Whether a value is not within a set of values		
+`MEMBER OF()` |	Returns true (1) if first operand matches any element of JSON array passed as second operand, otherwise returns false (0)
+`->`	|    Return value from JSON column after evaluating path; equivalent to JSON_EXTRACT().		
+`->>`	 |   Return value from JSON column after evaluating path and unquoting the result; equivalent to JSON_UNQUOTE(JSON_EXTRACT()).
+`>>` | Right shift				
+`<<`	|    Left shift	
+`&`	     |   Bitwise AND		
+`\|` |	Bitwise OR		
+`^`	 |       Bitwise XOR	
+`~` |	Bitwise inversion
+`NOT REGEXP` |	Negation of REGEXP			
+`REGEXP` |	Whether string matches regular expression		
+`RLIKE` |	Whether string matches regular expression	
+
+#### WHERE vs HAVING
 
 WHERE Clause is used to filter the records from the table or used while joining more than one table.Only those records will be extracted who are satisfying the specified condition in WHERE clause. WHERE can be used in SELECT, UPDATE, and DELETE. 
 
@@ -90,6 +177,15 @@ WHERE Clause vs HAVING Clause
     HAVING Clause is used after GROUP BY Clause
 7.	WHERE Clause is used with single row function like UPPER, LOWER etc.	
     HAVING Clause is used with multiple row function like SUM, COUNT etc.
+
+#### LIKE
+
+To use wildcards, the LIKE operator must be used. Wildcards can only be used with strings.
+
+Symbol | Function |
+--- | --- |
+`%` | Match any number of occurrences of any character and also works for no characters.
+`_` | Matches any single character
 
 ## Comments
 - `-- can be added to the end of the line`

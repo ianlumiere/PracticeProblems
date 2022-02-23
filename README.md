@@ -4,13 +4,13 @@ A repo to hold my answers to practice problems.
 # CTCI Notes
 
 # 7 Steps
-1 Listen Carefully (use all details, they may be helpful, like if the array is sorted)
-2 Example (large enough and avoids special cases)
-3 Brute Force (do not need to code it, just figure something that works and then optimize)
-4 Optimize (improve your space and time complexity, consider sorting because it is O(n log n))
-5 Walk Through Your Algorithm (avoid coding too quickly, make sure you really know what you want)
-6 Code (style matters, be consistent, use space wisely, use descriptive names)
-7 Test (think about each line, use small test cases first, then think of edge cases, if there's time do big test cases)
+1. Listen Carefully (use all details, they may be helpful, like if the array is sorted)
+2. Example (large enough and avoids special cases)
+3. Brute Force (do not need to code it, just figure something that works and then optimize)
+4. Optimize (improve your space and time complexity, consider sorting because it is O(n log n))
+5. Walk Through Your Algorithm (avoid coding too quickly, make sure you really know what you want)
+6. Code (style matters, be consistent, use space wisely, use descriptive names)
+7. Test (think about each line, use small test cases first, then think of edge cases, if there's time do big test cases)
 
 # 3 Strategies for Solving Problems
 BUD
