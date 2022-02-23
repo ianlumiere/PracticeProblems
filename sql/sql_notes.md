@@ -43,7 +43,8 @@ WHERE
     price BETWEEN 1 AND 3) AND
     name != 'cherry' AND
     name IS NOT NULL XOR
-    id NOT IN (0, 1, 2)
+    id NOT IN (0, 1, 2) AND
+    name LIKE '%card_' -- This would get 'pokemon cards', but not 'pokemon card'
 ORDER BY price DESC, name
 LIMIT 5, 2
 ```
@@ -52,7 +53,7 @@ LIMIT 5, 2
 
 Main purpose is to retrieve information from one or more tables. Data will always be returned in no order of any significance.
 
-### DISTINCT
+#### DISTINCT
 
 Only returns rows with distinct values. Applies to all named columns, not just the one it preceeds.
 
@@ -63,7 +64,7 @@ SELECT
 FROM Products;
 ```
 
-### LIMIT and OFFSET
+#### LIMIT and OFFSET
 
 You can use LIMIT to say how many rows you want max and OFFSET to tell it where to start. 
 In MySQL, you can shorten it to `LIMIT 5, 3` where the OFFSET here would be 3.
@@ -103,7 +104,7 @@ ORDER BY prod_price DESC, prod_name; -- this will sort first by prod_price from 
 
 Use single quotes to delimit strings, not double quotes. Processes AND operators before OR operators
 
-### MySQL Operators
+#### MySQL Operators
 Symbol | Function |
 --- | --- |
 `>` | Greater than operator
@@ -152,7 +153,7 @@ Symbol | Function |
 `REGEXP` |	Whether string matches regular expression		
 `RLIKE` |	Whether string matches regular expression	
 
-### WHERE vs HAVING
+#### WHERE vs HAVING
 
 WHERE Clause is used to filter the records from the table or used while joining more than one table.Only those records will be extracted who are satisfying the specified condition in WHERE clause. WHERE can be used in SELECT, UPDATE, and DELETE. 
 
@@ -176,6 +177,15 @@ WHERE Clause vs HAVING Clause
     HAVING Clause is used after GROUP BY Clause
 7.	WHERE Clause is used with single row function like UPPER, LOWER etc.	
     HAVING Clause is used with multiple row function like SUM, COUNT etc.
+
+#### LIKE
+
+To use wildcards, the LIKE operator must be used. Wildcards can only be used with strings.
+
+Symbol | Function |
+--- | --- |
+`%` | Match any number of occurrences of any character and also works for no characters.
+`_` | Matches any single character
 
 ## Comments
 - `-- can be added to the end of the line`
