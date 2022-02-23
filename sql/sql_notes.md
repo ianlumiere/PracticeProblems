@@ -21,11 +21,14 @@
 - DISTINCT
 - CASE WHEN
 - FROM
-- WHERE
 - INNER JOIN
 - LEFT JOIN
 - RIGHT JOIN
 - FULL JOIN???????
+- WHERE
+- HAVING
+- LIKE
+- IN
 - GROUP BY
 - ORDERY BY
 - LIMIT OFFSET
@@ -162,30 +165,24 @@ with SELECT statement.
 
 A HAVING clause is like a WHERE clause, but applies only to groups as a whole (that is, to the rows in the result set representing groups), whereas the WHERE clause applies to individual rows. A query can contain both a WHERE clause and a HAVING clause. 
 
-WHERE Clause vs HAVING Clause
-1.	WHERE Clause is used to filter the records from the table based on the specified condition.	
-    HAVING Clause is used to filter record from the groups based on the specified condition.
-2.	WHERE Clause can be used without GROUP BY Clause	
-    HAVING Clause cannot be used without GROUP BY Clause
-3.	WHERE Clause implements in row operations	
-    HAVING Clause implements in column operation
-4.	WHERE Clause cannot contain aggregate function	
-    HAVING Clause can contain aggregate function
-5.	WHERE Clause can be used with SELECT, UPDATE, DELETE statement.	
-    HAVING Clause can only be used with SELECT statement.
-6.	WHERE Clause is used before GROUP BY Clause	
-    HAVING Clause is used after GROUP BY Clause
-7.	WHERE Clause is used with single row function like UPPER, LOWER etc.	
-    HAVING Clause is used with multiple row function like SUM, COUNT etc.
+WHERE Clause | HAVING Clause |
+--- | --- |
+Used to filter the records from the table based on the specified condition.	| Used to filter record from the groups based on the specified condition.
+Can be used without GROUP BY Clause | Cannot be used without GROUP BY Clause
+Implements in row operations | Implements in column operation
+Cannot contain aggregate function | Can contain aggregate function
+Can be used with SELECT, UPDATE, DELETE statement. | Can only be used with SELECT statement.
+Used before GROUP BY Clause | Used after GROUP BY Clause
+Used with single row function like UPPER, LOWER etc. | Used with multiple row function like SUM, COUNT etc.
 
 #### LIKE
 
-To use wildcards, the LIKE operator must be used. Wildcards can only be used with strings.
+To use wildcards, the LIKE operator must be used. Wildcards can only be used with strings. Try to not overuse them. Try not to use them at the beginning of the search pattern because that will make it the slowest to process.
 
 Symbol | Function |
 --- | --- |
 `%` | Match any number of occurrences of any character and also works for no characters.
-`_` | Matches any single character
+`_` | Matches any single character, but will not match for no characters.
 
 ## Comments
 - `-- can be added to the end of the line`
