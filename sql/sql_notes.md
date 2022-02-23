@@ -39,7 +39,11 @@ SELECT
     name
 FROM Products
 WHERE
-    price >= 5.49
+    (price >= 5.49 OR
+    price BETWEEN 1 AND 3) AND
+    name != 'cherry' AND
+    name IS NOT NULL XOR
+    id NOT IN (0, 1, 2)
 ORDER BY price DESC, name
 LIMIT 5, 2
 ```
@@ -97,13 +101,16 @@ ORDER BY prod_price DESC, prod_name; -- this will sort first by prod_price from 
 
 ## WHERE
 
-MySQL Operators
+Use single quotes to delimit strings, not double quotes. Processes AND operators before OR operators
+
+### MySQL Operators
 Symbol | Function |
 --- | --- |
 `>` | Greater than operator
 `>=` |	    Greater than or equal operator
 `>=` |	    Greater than or equal operator		
 `<`	  |      Less than operator		
+`=`	      |  Equal operator	
 `<>`, `!=` |	Not equal operator
 `<=`	|    Less than or equal operator		
 `<=>`	 |   NULL-safe equal to operator	
@@ -115,8 +122,7 @@ Symbol | Function |
 `DIV` |	Integer division
 `%`, `MOD` |	Modulo operator				
 `:=`	|    Assign a value		
-`=`	     |   Assign a value (as part of a SET statement, or as part of the SET clause in an UPDATE statement)		
-`=`	      |  Equal operator		
+`=`	     |   Assign a value (as part of a SET statement, or as part of the SET clause in an UPDATE statement)			
 `AND`, `&&` |	Logical AND	
 `OR`, `||` |	Logical OR	
 `XOR` |	Logical XOR	
