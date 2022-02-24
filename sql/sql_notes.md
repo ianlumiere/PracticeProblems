@@ -16,7 +16,6 @@
     - PK values should never be reused (if a row is deleted, its PK may NOT be assigned to a new row in the future)
 - `Foreign Key`: A field (or collection of fields) in one table, that refers to the PK in another table.
 
-
 ## Keywords
 
 - SELECT
@@ -43,6 +42,11 @@ SELECT
     p.id,
     p.price,
     p.name,
+    p.type,
+    CASE
+        WHEN p.price >= 10 THEN TRUE
+        ELSE FALSE
+    END AS 'big sale',
     o.order_id
 FROM Products p
 WHERE
@@ -216,6 +220,19 @@ SELECT
         ELSE 'The quantity is under 30'
     END AS QuantityText
 FROM OrderDetails;
+```
+
+## COALESCE
+
+The COALESCE function returns the first non-NULL value in a given list. Unlike the ISNULL function, it can accept multiple expressions.
+
+```
+SELECT 
+    ID, 
+    Student,
+    COALESCE(Email1, Email2, 'N/A') AS Primary_Email
+FROM Students
+ORDER BY ID
 ```
 
 ## JOIN
