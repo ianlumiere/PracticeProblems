@@ -14,6 +14,8 @@
     - Every row must have a PK (no NULL values)
     - PKs should never be modified or updated
     - PK values should never be reused (if a row is deleted, its PK may NOT be assigned to a new row in the future)
+- `Foreign Key`: A field (or collection of fields) in one table, that refers to the PK in another table.
+
 
 ## Keywords
 
@@ -24,7 +26,7 @@
 - INNER JOIN
 - LEFT JOIN
 - RIGHT JOIN
-- FULL JOIN???????
+- FULL JOIN (Postgres)/CROSS JOIN (MySQL)
 - WHERE
 - HAVING
 - LIKE
@@ -37,10 +39,11 @@
 
 ```
 SELECT
-    id,
-    price,
-    name
-FROM Products
+    p.id,
+    p.price,
+    p.name,
+    o.order_id
+FROM Products p
 WHERE
     (price >= 5.49 OR
     price BETWEEN 1 AND 3) AND
@@ -48,6 +51,7 @@ WHERE
     name IS NOT NULL XOR
     id NOT IN (0, 1, 2) AND
     name LIKE '%card_' -- This would get 'pokemon cards', but not 'pokemon card'
+INNER JOIN Orders o ON p.name = o.name
 ORDER BY price DESC, name
 LIMIT 5, 2
 ```
@@ -56,7 +60,7 @@ LIMIT 5, 2
 
 Main purpose is to retrieve information from one or more tables. Data will always be returned in no order of any significance.
 
-#### DISTINCT
+### DISTINCT
 
 Only returns rows with distinct values. Applies to all named columns, not just the one it preceeds.
 
@@ -67,7 +71,7 @@ SELECT
 FROM Products;
 ```
 
-#### LIMIT and OFFSET
+### LIMIT and OFFSET
 
 You can use LIMIT to say how many rows you want max and OFFSET to tell it where to start. 
 In MySQL, you can shorten it to `LIMIT 5, 3` where the OFFSET here would be 3.
@@ -107,7 +111,7 @@ ORDER BY prod_price DESC, prod_name; -- this will sort first by prod_price from 
 
 Use single quotes to delimit strings, not double quotes. Processes AND operators before OR operators
 
-#### MySQL Operators
+### MySQL Operators
 Symbol | Function |
 --- | --- |
 `>` | Greater than operator
@@ -156,7 +160,7 @@ Symbol | Function |
 `REGEXP` |	Whether string matches regular expression		
 `RLIKE` |	Whether string matches regular expression	
 
-#### WHERE vs HAVING
+### WHERE vs HAVING
 
 WHERE Clause is used to filter the records from the table or used while joining more than one table.Only those records will be extracted who are satisfying the specified condition in WHERE clause. WHERE can be used in SELECT, UPDATE, and DELETE. 
 
@@ -175,7 +179,7 @@ Can be used with SELECT, UPDATE, DELETE statement. | Can only be used with SELEC
 Used before GROUP BY Clause | Used after GROUP BY Clause
 Used with single row function like UPPER, LOWER etc. | Used with multiple row function like SUM, COUNT etc.
 
-#### LIKE
+### LIKE
 
 To use wildcards, the LIKE operator must be used. Wildcards can only be used with strings. Try to not overuse them. Try not to use them at the beginning of the search pattern because that will make it the slowest to process.
 
@@ -183,6 +187,27 @@ Symbol | Function |
 --- | --- |
 `%` | Match any number of occurrences of any character and also works for no characters.
 `_` | Matches any single character, but will not match for no characters.
+
+## INSERT
+
+```
+INSERT INTO table_name (column1, column2, column3, ...) -- column naming not needed if you are inserting for every column
+VALUES (value1, value2, value3, ...);
+```
+
+## DELETE
+
+```
+DELETE FROM table_name WHERE condition;
+```
+
+## UPDATE
+
+```
+UPDATE table_name
+SET column1 = value1, column2 = value2, ...
+WHERE condition;
+```
 
 ## Comments
 - `-- can be added to the end of the line`
@@ -195,3 +220,70 @@ Symbol | Function |
 - SQL is case insensitive.
 - All extra whitespace in a SQL statement is ignored, so format how you like it.
 - SQL is 0 indexed
+- ON CHAPTER 7!
+
+## Interview Questions:
+1. What is a Primary Key? 
+
+A column (or set of columns) whose values uniquely identify every row in a table
+
+2. What is a Foreign Key? 
+
+A field (or collection of fields) in one table, that refers to the PK in another table.
+
+3. List the different types of joins and why would you use any of them Have you used variables (either in programming or data base queries?)
+
+MySQL:
+INNER JOIN: Returns records that have matching values in both tables
+LEFT JOIN: Returns all records from the left table, and the matched records from the right table
+RIGHT JOIN: Returns all records from the right table, and the matched records from the left table
+CROSS JOIN: Returns all records from both tables
+
+4. Have you pivoted a table? 
+
+Turns the table to the right.
+
+5. Have you moved data between data bases?
+
+No
+
+6. If you need a task/script to run every day to get data from a system, how do you set it up?
+
+Airflow. Some type of scheduled ingestion system.
+
+7. What is the difference between char (char or character) and varchar? 
+
+char stores only fixed-length character string data types whereas varchar stores variable-length string where an upper limit of length is specified.
+
+8. What is indexing? Why is it done?
+
+Indexes are used to retrieve data from the database more quickly than otherwise. The users cannot see the indexes, they are just used to speed up searches/queries. Note: Updating a table with indexes takes more time than updating a table without (because the indexes also need an update).
+
+9. What is stored procedures? 
+
+A stored procedure is a prepared SQL code that you can save, so the code can be reused over and over again.
+
+10. Why would you normalize a table? 
+
+Normalization entails organizing the columns (attributes) and tables (relations) of a database to ensure that their dependencies are properly enforced by database integrity constraints. Normalization is the process of creating a maximally efficient relational database. Essentially, databases should be organized to decrease redundancy and avoid dependence anomalies.
+
+- First Normal Form (1NF)
+    - This initial set of rules sets the fundamental guidelines for keeping your database properly organized.
+    - Remove any repeating groups of data (i.e. beware of duplicative columns or rows within the same table)
+    - Create separate tables for each group of related data
+    - Each table should have a primary key (i.e. a field that identifies each row with a non-null, unique value)
+
+- Second Normal Form (2NF)
+    - This next set of rules builds upon those outlined in 1NF.
+    - Meet every rule from 1NF
+    - Remove data that doesn’t depend on the table’s primary key (either move the data to the appropriate table or create a new table and primary key)
+    - Foreign keys are used to identify table relationships
+
+- Third Normal Form (3NF)
+    - This set of rules takes those outlined in 1NF and 2NF a step further.
+    - Meet every rule from 1NF and 2NF
+    - Remove attributes that rely on other non-key attributes (i.e. remove columns that depend on columns that aren’t foreign or primary keys)
+
+11. When would you normalize a dimension? Its advantages & disadvantages?
+
+?
