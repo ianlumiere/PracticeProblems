@@ -26,7 +26,8 @@
 - INNER JOIN
 - LEFT JOIN
 - RIGHT JOIN
-- FULL JOIN (Postgres)/CROSS JOIN (MySQL)
+- FULL JOIN
+- CROSS JOIN
 - WHERE
 - HAVING
 - LIKE
@@ -188,6 +189,49 @@ Symbol | Function |
 `%` | Match any number of occurrences of any character and also works for no characters.
 `_` | Matches any single character, but will not match for no characters.
 
+## Aggregate Functions
+
+- `COUNT` counts how many rows are in a particular column.
+- `SUM` adds together all the values in a particular column.
+- `MIN` and `MAX` return the lowest and highest values in a particular column, respectively.
+- `AVG` calculates the average of a group of selected values.
+
+```
+SELECT 
+    AVG(price)
+FROM Products;
+```
+
+## CASE Statements
+
+The CASE statement goes through conditions and returns a value when the first condition is met (like an if-then-else statement). So, once a condition is true, it will stop reading and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE part and no conditions are true, it returns NULL.
+
+```
+SELECT 
+    OrderID, 
+    Quantity,
+    CASE
+        WHEN Quantity > 30 THEN 'The quantity is greater than 30'
+        WHEN Quantity = 30 THEN 'The quantity is 30'
+        ELSE 'The quantity is under 30'
+    END AS QuantityText
+FROM OrderDetails;
+```
+
+## JOIN
+
+### CROSS JOIN vs FULL OUTER JOIN
+
+A CROSS JOIN produces a cartesian product between the two tables, returning all possible combinations of all rows. It has no on clause because you're just joining everything to everything.
+
+A FULL OUTER JOIN is a combination of a left outer and right outer join. It returns all rows in both tables that match the query's where clause, and in cases where the on condition can't be satisfied for those rows it puts null values in for the unpopulated fields.
+
+## UNION
+
+### UNION vs UNION ALL
+
+UNION ALL keeps all of the records from each of the original data sets, UNION removes any duplicate records. UNION first performs a sorting operation and eliminates of the records that are duplicated across all columns before finally returning the combined data set.
+
 ## INSERT
 
 ```
@@ -207,6 +251,20 @@ DELETE FROM table_name WHERE condition;
 UPDATE table_name
 SET column1 = value1, column2 = value2, ...
 WHERE condition;
+```
+
+## Correlated Subqueries
+
+A correlated subquery is evaluated once for each row processed by the parent statement. The parent statement can be a SELECT, UPDATE, or DELETE statement. A correlated subquery is one way of reading every row in a table and comparing values in each row against related data. It is used whenever a subquery must return a different result or set of results for each candidate row considered by the main query. In other words, you can use a correlated subquery to answer a multipart question whose answer depends on the value in each row processed by the parent statement. Ex:
+
+```
+SELECT column1, column2, ....
+FROM table1 outer
+WHERE column1 operator
+                    (SELECT column1, column2
+                     FROM table2
+                     WHERE expr1 = 
+                               outer.expr2);
 ```
 
 ## Comments
