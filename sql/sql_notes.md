@@ -249,7 +249,11 @@ SELECT
 FROM Products
 ```
 
-## Data Manipulation Functions
+## DATE Functions
+
+
+
+## Ranking
 
 
 
