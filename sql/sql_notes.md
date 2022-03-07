@@ -300,6 +300,21 @@ A FULL OUTER JOIN is a combination of a left outer and right outer join. It retu
 
 UNION ALL keeps all of the records from each of the original data sets, UNION removes any duplicate records. UNION first performs a sorting operation and eliminates of the records that are duplicated across all columns before finally returning the combined data set.
 
+## GROUP BY
+
+Grouping lets you divide data into logical sets so that you can perform aggregate calculations on each group.
+
+```
+SELECT
+    vend_id,
+    COUNT(*) AS num_prods
+FROM Products
+GROUP BY vend_id
+HAVING COUNT(*) >= 2; -- cannot just reference the alias
+```
+
+HAVING supports all of WHERE's operators.
+
 ## INSERT
 
 ```
