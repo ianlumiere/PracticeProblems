@@ -19,7 +19,12 @@
 ## Keywords
 
 - SELECT
+- AS
 - DISTINCT
+- CONCAT() in MySQL, || in Postgres
+- TRIM()
+- RTRIM()
+- LTRIM()
 - CASE WHEN
 - FROM
 - INNER JOIN
@@ -43,6 +48,7 @@ SELECT
     p.price,
     p.name,
     p.type,
+    CONCAT(p.origin_city, ' ', p.origin_state) AS 'product_origin_city_state',
     CASE
         WHEN p.price >= 10 THEN TRUE
         ELSE FALSE
@@ -206,6 +212,51 @@ SELECT
 FROM Products;
 ```
 
+## Calculated Fields
+
+### Concatenating
+
+Postgres:
+```
+SELECT
+    vend_city || ' ' || vend_state AS 'vendor_city_state'
+FROM Vendors;
+```
+
+MySQL:
+```
+SELECT
+    CONCAT(origin_city, ' ', origin_state) AS 'origin_city_state',
+FROM Products;
+```
+
+### Trimming
+
+TRIM() removes whitespace on the left and right of the value
+RTRIM() removes whitespace from the right of the value
+LTRIM() removes whitespace to the left of the value
+
+### Calculations
+
+You can use `+`, `-`, `*`, `/` as mathematical operators in creating calculated fields.
+
+```
+SELECT
+    prod_id,
+    quantity,
+    price,
+    quantity * price AS total_value
+FROM Products
+```
+
+## DATE Functions
+
+
+
+## Ranking
+
+
+
 ## CASE Statements
 
 The CASE statement goes through conditions and returns a value when the first condition is met (like an if-then-else statement). So, once a condition is true, it will stop reading and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE part and no conditions are true, it returns NULL.
@@ -248,6 +299,21 @@ A FULL OUTER JOIN is a combination of a left outer and right outer join. It retu
 ### UNION vs UNION ALL
 
 UNION ALL keeps all of the records from each of the original data sets, UNION removes any duplicate records. UNION first performs a sorting operation and eliminates of the records that are duplicated across all columns before finally returning the combined data set.
+
+## GROUP BY
+
+Grouping lets you divide data into logical sets so that you can perform aggregate calculations on each group.
+
+```
+SELECT
+    vend_id,
+    COUNT(*) AS num_prods
+FROM Products
+GROUP BY vend_id
+HAVING COUNT(*) >= 2; -- cannot just reference the alias
+```
+
+HAVING supports all of WHERE's operators.
 
 ## INSERT
 
@@ -295,7 +361,7 @@ WHERE column1 operator
 - SQL is case insensitive.
 - All extra whitespace in a SQL statement is ignored, so format how you like it.
 - SQL is 0 indexed
-- ON CHAPTER 7!
+- It is far quicker to perform calculations on the database server than it is to perform within the client.
 
 ## Interview Questions:
 1. What is a Primary Key? 

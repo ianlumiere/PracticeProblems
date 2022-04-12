@@ -877,3 +877,26 @@ class SolutionRunningSum:
                 sums.append(value + sums[index-1])
         
         return sums
+
+# Given an unsorted array, give me the largest value that appears more than once
+# nums = [3,2,1,1,5,4,3,5,7,1,2,2,2]
+# answer: 5
+class ReturnBiggestRepeatedNumber:
+    def returnBiggestRepeatedNumber(nums):
+        hashmap = {}
+        largest = 0
+        
+        for index, num in enumerate(nums):
+            
+            if num in hashmap.keys():
+                hashmap[num] += 1
+            else:
+                hashmap[num] = 1
+                
+            if hashmap[num] > 1:
+                if largest < num:
+                    largest = num
+
+        #print(hashmap)
+        # print(largest)
+        return largest
