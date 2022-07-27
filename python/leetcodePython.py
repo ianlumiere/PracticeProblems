@@ -878,6 +878,7 @@ class SolutionRunningSum:
         
         return sums
 
+
 # Given an unsorted array, give me the largest value that appears more than once
 # nums = [3,2,1,1,5,4,3,5,7,1,2,2,2]
 # answer: 5
@@ -900,3 +901,28 @@ class ReturnBiggestRepeatedNumber:
         #print(hashmap)
         # print(largest)
         return largest
+
+
+# Given an integer x, return true if x is palindrome integer.
+# An integer is a palindrome when it reads the same backward as forward.
+# For example, 121 is a palindrome while 123 is not.
+
+class Solution:
+    def isPalindrome(self, x: int) -> bool:  
+        xString = str(x);
+
+        start = 0
+        end = len(xString) - 1;
+
+        while start != end:
+            if xString[start] != xString[end]:
+                return False
+
+            else:
+                start += 1
+                end -= 1
+                if start > end:
+                    return True
+
+        return True
+
