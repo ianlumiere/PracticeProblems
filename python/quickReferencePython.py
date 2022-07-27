@@ -93,6 +93,7 @@ print("\ncan be used on strings, lists, and tuples")
 print("list[start:stop_exclusive:step] each value is optional")
 print("list[2:] means start at element 2 and stop at the end")
 print("list[::-1] will go backwards one element at a time")
+print("list[:-1] will return everything in the list except the last element, can be used to remove end of string")
 
 print("\n\n   LIST COPYING AND REFERENCES")
 print(f"\nlists are mutable, meaning they can be changed. list_2 = list_1 makes a reference to list_1,\
