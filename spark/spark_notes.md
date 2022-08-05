@@ -1,5 +1,15 @@
 # Spark and PySpark Guide
 
+## Purpose of Spark
+Pandas is great... until we have too much data.
+If we have too much data for a single machine, we need to parallelize it using Spark.
+To do this we use RDDs.
+
+## RDD
+RDD stands for Resilient (it is in memory), Distributed (on multiple machines) Dataset
+This is what Spark lets us use to parallelize the data as we load something too big
+to handle on a single machine.
+
 ## Differences between Apache Spark and PySpark
 Spark is the most powerful big data tool, which is a parallel distributed processing framework. The core power of Spark is to handle huge amounts of data.
 Spark supports: Scala, Java, Python, and R
@@ -14,5 +24,5 @@ Fault Tolerance: it can recover data if it is lost
 Supports SQL
 Supports several modes of deploymen: Standalone, Apache Mesos, Hadoop YARN, K8S. These are all different cluster managers
 Read data from PostgreSQL, Cassandra, S3, HDFS, Blob, etc. It supports many other data sources.
-PySpark lets you use python to write Spark code, but it is a little slower (will be easier for me though given my Python/Pandas knowledge)
+PySpark lets you use python to run transformations on RDDs and to write Spark code, but it is a little slower (will be easier for me though given my Python/Pandas knowledge)
 
