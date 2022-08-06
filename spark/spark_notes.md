@@ -153,4 +153,91 @@ df.drop('ColumnName')
 
 ## Renaming Columns
 
+To rename a single column, do:
+df.withColumnRenamed('CurrentName', 'NewName')
+
+To rename multiple columns, do:
+names = [('CurrentName', 'NewNam'e'), ('CurrentName2', 'NewName2')]
+for current, newer in names:
+    df = df.withColumnRenamed(current, newer)
+
+## Summary Stats
+
+To get a table of stats, like count, mean, stddev, min, max, do:
+df.select(['Age', 'RestingHR']).describe().show()
+
+## Null Values
+
+To deal with null values, you can drop all rows with at least one null by doing:
+df = df.na.drop()
+
+You can also drop only rows that have nothing but null values:
+df = df.na.drop(how='all')
+
+You can also drop rows that don't have at least a certain number of non null values:
+df = df.na.drop(thresh=2)
+
+You can also drop null value rows considering only a subset of columns:
+df = df.na.drop(how='any', subset=['age','gender'])
+
+You can also replace null values with a different value:
+df = df.na.fill(value='?', subset=['firstname'])
+
+## Filtering
+
+To filter based on a condition, do:
+df.filter('age > 18')
+
+The where command does the same thing:
+df.where('age > 18')
+
+Instead of a string, you can insert a column and apply a condition:
+df.where(df['age'] > 18)
+
+### Operators for Applying Multiple Conditions
+
+& for and, | for or. Ex:
+df.where((df['age'] > 18) & (df['firstname'] == 'Ian'))
+df.where((df['age'] > 18) | (df['firstname'] == 'Ian'))
+
+### Selecting Non Matching Rows
+
+Use the ~ sign to specify the rows that do not match the condition:
+df.filter(~(df['firstname'] == 'Ian'))
+
+## Evaluating a String
+
+You can have Spark interpret a string as a command by doing:
+from pyspark.sql.functions import expr
+exp = 'age + 0.2 * ageFixed'
+df.withColumn('new_col', expr(exp))
+
+## Group By
+
+Allows you to divide your data based on some group. This is useful for calculating statistics for each group. We can also tack on selecting what column we want to see the results for:
+df.groupBy('age').mean().select(['age', 'avgHeartRate']).show(3)
+
+### Sorting Results
+
+from pyspark.sql.functions import desc, asc
+heartrate_by_age = df.groupBy('age').mean().select(['age', 'avgHeartRate']).show(3)
+heartrate_by_age.orderBy(desc("age"))
+
+### Calculating Multiple Stats
+
+from pyspark.sql import functions as F
+df.agg(F.min(df['age']), F.max(df['age']), F.avg(df['age'])).show()
+
+## SQL Syntax
+
+You can type SQL and run it in Spark
+df.createOrReplaceTempView("df")
+spark.sql("""SELECT age from df""").show(2)
+
+## Pivoting
+
+You can pivot tables. For example, we could pivot a table that has the columns age and gender to a table that has age for the first column and then a female column and a male column and the counts of each of those genders based on age.
+df.groupBy('age').pivot('gender', ("M", "F")).count().show()
+
+
 
