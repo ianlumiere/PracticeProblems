@@ -92,6 +92,24 @@ df.select("Age").show(3)
 Show first 3 rows of Age and Gender columns
 df.select(["Age", "Gender"]).show(3)
 
+Get the first 3 results
+df.limit(3)
+
+Get rows where the age is above 25
+df.where(df.Age > 25)
+
+You can have multiple where clauses
+df.where((df.Age > 25) & (df.Gender == "M"))
+
+Get the average age
+df.agg({'Age':'avg'})
+
+Get average age by gender
+df.groupBy('Gender').agg({'Age':'avg'})
+
+Get average age of adults
+df.filter(df.Age >= 18).agg({'Age':'avg'})
+
 ## Pandas vs PySpark DFs
 
 Both represent data with rows, columns, and schema.
