@@ -46,7 +46,7 @@
 SELECT
     p.id,
     p.price,
-    p.name,
+    p.name AS 'product_name',
     p.type,
     CONCAT(p.origin_city, ' ', p.origin_state) AS 'product_origin_city_state',
     CASE
@@ -199,6 +199,16 @@ Symbol | Function |
 `%` | Match any number of occurrences of any character and also works for no characters.
 `_` | Matches any single character, but will not match for no characters.
 
+### IN
+
+You can check to see if the clause is in a list of things. Ex:
+
+```
+SELECT *
+FROM Customers
+WHERE country IN ("Japan", "Australia")
+```
+
 ## Aggregate Functions
 
 - `COUNT` counts how many rows are in a particular column.
@@ -261,6 +271,13 @@ YEAR - format YYYY or YY
 SELECT * 
 FROM Orders 
 WHERE OrderDate='2008-11-11'
+```
+
+This will get all orders with order dates in 2019, 2020, 2021, and 2022
+```
+SELECT *
+FROM Orders
+WHERE OrderDate BETWEEN "2019-xx-xx" AND "2022-xx-xx"
 ```
 
 ## Ranking
@@ -360,6 +377,15 @@ HAVING COUNT(*) >= 2; -- cannot just reference the alias
 ```
 
 HAVING supports all of WHERE's operators.
+
+This will give us the average price for each category id:
+```
+SELECT
+    category_id,
+    AVG(price) AS 'average_price'
+FROM Products
+GROUP BY category_id
+```
 
 ## INSERT
 
