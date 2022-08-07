@@ -96,7 +96,8 @@ df.select(["Age", "Gender"]).show(3)
 
 Both represent data with rows, columns, and schema.
 PySpark DFs support distributed computation, but Pandas does not.
-If you know Pandas, then moving to PySpark will be natural
+A PySpark DF is underneath an RDD.
+If you know Pandas, then moving to PySpark will be natural.
 
 ## DAGs
 
