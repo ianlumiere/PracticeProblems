@@ -251,11 +251,57 @@ FROM Products
 
 ## DATE Functions
 
+MySQL:
+DATE - format YYYY-MM-DD
+DATETIME - format: YYYY-MM-DD HH:MI:SS
+TIMESTAMP - format: YYYY-MM-DD HH:MI:SS
+YEAR - format YYYY or YY
 
+```
+SELECT * 
+FROM Orders 
+WHERE OrderDate='2008-11-11'
+```
 
 ## Ranking
 
+```
+SELECT 
+	first_name, 
+	last_name, 
+	salary, 
+	RANK() OVER (ORDER BY salary) salary_rank
+FROM 
+	employees;
+```
 
+This will give us the employees with the second highest salary in their departments:
+
+```
+WITH payroll AS (
+	SELECT 
+		first_name, 
+		last_name, 
+		department_id,
+		salary, 
+		RANK() OVER (
+			PARTITION BY department_id
+			ORDER BY salary) salary_rank
+	FROM 
+		employees
+)
+SELECT 
+	first_name, 
+	last_name,
+	department_name,
+	salary
+FROM 
+	payroll p
+	INNER JOIN departments d 
+		ON d.department_id = p.department_id
+WHERE 
+	salary_rank = 2;	
+```
 
 ## CASE Statements
 
