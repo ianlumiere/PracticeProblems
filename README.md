@@ -43,5 +43,7 @@ O(1)   O(log n)   O(n)   O(n log n)   O(n^2)   O(2^n)   O(n!)
 - Drop non dominant terms, so if you have one step that is O(n), and another step that is O(log n), O(n) dominates O(log n), so O(n) + O(log n) gets reduced and the overall complexity is O(n)
 
 # General Tips
-Constantly think out loud, including talking about what you are not doing and why
-Be sure to test your code, not just your algorithm (this will help you catch bugs)
+Constantly think out loud, including talking about what you are not doing and why.
+Be sure to test your code, not just your algorithm (this will help you catch bugs).
+When nearing the end of a test, make sure everything compiles and write notes if you
+cannot finish in time. Do not let it auto submit!
