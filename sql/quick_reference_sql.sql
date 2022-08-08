@@ -35,3 +35,13 @@ SELECT
 FROM Stats_Sum
 WHERE rec_total > 0
 ORDER BY area
+
+-- 4 most recent rows
+SELECT s.*
+FROM Subscribers s
+WHERE s.date = (
+    SELECT 
+        MAX(s2.date) 
+    FROM Subscribers s2 
+    WHERE s2.desired_row = s.desired_row
+    )
