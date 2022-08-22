@@ -63,3 +63,27 @@ SELECT
 FROM orders
 GROUP BY order_id, product_id
 HAVING COUNT(*) > 1
+
+-- 7 rank salaries
+SELECT
+    full_name,
+    salary,
+    RANK() OVER (ORDER BY salary) AS 'salary_rank'
+FROM employees
+
+-- 8 get second highest salary for each department
+WITH rankings AS (
+    SELECT
+        full_name,
+        dept_id,
+        salary,
+        RANK() OVER (
+            PARTITION BY dept_id
+            ORDER BY salary
+        ) AS 'salary_rank'
+    FROM employees
+)
+SELECT
+    *
+FROM rankings r
+WHERE salary_rank = 2
