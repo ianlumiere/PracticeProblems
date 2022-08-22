@@ -37,7 +37,8 @@ WHERE rec_total > 0
 ORDER BY area
 
 -- 4 most recent row for a customer
-SELECT s.*
+SELECT 
+    s.*
 FROM Subscribers s
 WHERE s.date = (
     SELECT 
@@ -45,3 +46,20 @@ WHERE s.date = (
     FROM Subscribers s2 
     WHERE s2.customer_id = s.customer_id
     )
+
+-- 5 get duplicate rows for single value
+SELECT
+    order_id,
+    COUNT(order_id)
+FROM orders
+GROUP BY order_id
+HAVING COUNT(order_id) > 1
+
+-- 6 get duplicate rows for entire rows
+SELECT
+    order_id,
+    product_id,
+    COUNT(*)
+FROM orders
+GROUP BY order_id, product_id
+HAVING COUNT(*) > 1
