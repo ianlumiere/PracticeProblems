@@ -926,3 +926,190 @@ class Solution:
 
         return True
 
+# Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid
+# An input string is valid if:
+# open brackets must be closed by the same type of brackets and open brackets must be closed in the correct order
+# Example 1: "()[]{}" - valid
+# Example 2: "{[]}" - valid 
+# Example 3: "{]" - invalid
+
+# Complexity analysis
+# Time complexity : O(n)
+# Space complexity : O(n)
+
+def check(input):
+    if len(input) % 2 == 1:
+        return False
+
+    stack = []
+    answer_key = {
+        ')': '(',
+        ']': '[',
+        '}': '{'
+    }
+
+    for i in input:
+        if i == '(' or i == '[' or i == '{':
+            stack.append(i)
+        else:
+            if len(stack) == 0:
+                return False # array is empty
+
+            # check key to see if value matches
+            if answer_key[i] != stack[len(stack)-1]:
+                return False
+            else:
+                stack.pop(len(stack)-1)
+
+    if len(stack) == 0:
+        return True
+    else:
+        return False
+
+
+# Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+# You may assume that each input would have exactly one solution, and you may not use the same element twice.
+# You can return the answer in any order.
+
+# Example 1:
+
+# Input: nums = [2,7,11,15], target = 9
+# Output: [0,1]
+# Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+
+# Example 2:
+# Input: nums = [3,2,4], target = 6
+# Output: [1,2]
+
+# Example 3:
+# Input: nums = [3,3], target = 6
+# Output: [0,1]
+
+# O(n) worst case
+
+# ex2 = [1,2,4,5,5,5]
+# print(math_check(ex2, 6))
+
+def math_check(arr, target):
+
+    already_checked = {}
+
+    for i in range(0, len(arr)):
+        difference = target - arr[i] # get the difference
+        if difference < 0: # make it positive
+            difference * -1
+
+        if difference in already_checked:
+            return [already_checked[difference], i]
+
+        # add to dictionary last so that you don't use the current index twice
+        already_checked[arr[i]] = i # store the value as the key and the index as the value of what you just checked
+
+
+# Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same.
+# Return k after placing the final result in the first k slots of nums.
+# Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.
+
+# Example 1:
+# Input: nums = [1,1,2]
+# Output: 2, nums = [1,2,_]
+# Explanation: Your function should return k = 2, with the first two elements of nums being 1 and 2 respectively.
+# It does not matter what you leave beyond the returned k (hence they are underscores).
+
+# Example 2:
+# Input: nums = [0,0,1,1,1,2,2,3,3,4]
+# Output: 5, nums = [0,1,2,3,4,_,_,_,_,_] OR [0,1,2,3,4]
+# Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
+# It does not matter what you leave beyond the returned k (hence they are underscores).
+
+#ex = [-1,0,0,1,1,1,2,2,3,3,4,4,4]
+#ex1 = [0,0]
+#print(remove_duplicates(ex1))
+
+#O(n), O(n)
+
+def remove_duplicates(arr):
+    i = 1
+    while i != (len(arr)-1):
+        print(i)
+        if arr[i-1] == arr[i]:
+            del arr[i]
+            i -= 1
+        else:
+            i += 1
+    
+    if arr[i-1] == arr[i]:
+        del arr[i]
+
+    print(arr)
+    return len(arr)
+
+
+# Go through a sentence and return a list of words that appear at least k times and in the order that they appear
+
+def stopWords(text, k):
+    final_words = {}
+    order = []
+    text_array = text.split(" ")
+    
+    for i in text_array:
+        if i not in final_words.keys():
+            final_words[i] = 1
+            order.append(i)
+        else:
+            final_words[i] += 1
+    
+    words_to_delete = []
+            
+    for i in final_words: # you CANNOT iterate over a dictionary and remove keys as you go
+        if final_words[i] < k:
+            words_to_delete.append(i)
+    
+    for i in words_to_delete:
+        order.remove(i) # this removes all instances of i from the list
+        # del final_words[i] # this is how you would remove it from the dict, but this is unnecessary for the problem
+    
+    return order
+
+
+#Given a list of integers return the sum of all the elements in the list except the 
+#one that repeated the most. It is guaranteed to have an element that satisfy that 
+#condition.
+
+#[1,2,1,3] -> 5
+#[1,2,1,2,3] -> 3
+#[1,1,1,3] -> 3
+#[1,1,1] -> 0
+#[-1,1,1] -> -1
+#[] -> 0
+
+#time complexity: O(list_in), space complexity: O(list_in)
+# sum_missing_most_common([1,2,1,3])
+
+def sum_missing_most_common(list_in):
+    
+    unique_elements = {}
+    sum = 0
+    max_occurrences = 0
+    max_number = 0
+    remove = 0
+    
+    for i in list_in:
+        # check if found and increment
+        if i in unique_elements:
+            unique_elements[i] += 1
+        else:
+            unique_elements[i] = 1
+        
+        sum += i
+        
+    for key, value in unique_elements.items():
+        if value >= max_occurrences:
+            max_occurrences = value
+            
+        
+    for key, value in unique_elements.items():
+        if value == max_occurrences:
+            remove += (value * key)
+    
+    return sum - remove
