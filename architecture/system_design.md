@@ -2,7 +2,6 @@
 
 ## Technologies
 
-
 ### Python
 
 #### REST
@@ -12,14 +11,19 @@ REST stands for Representational State Transfer. REST APIs must be stateless, me
 #### Requests
 
 GET: reads a resource. Idempotent (every time you do it, you should get the same result, it does not change anything)
+
 POST: used to create a new resource. Not idempotent because each time you make the request you are making a new resource.
+
 DELETE: removes a resource. Idempotent because if you make the same request multiple times, it has the same request as making it once.
 
 #### CRUD
 
 Create (POST)
+
 Read (GET)
+
 Update (PUT)
+
 Delete (DELETE)
 
 
@@ -28,10 +32,13 @@ Delete (DELETE)
 #### Relational Databases
 
 1 to 1: Can be represented with two tables, think Person table and Contact_Info Table
+
 1 to Many: Customer table and Orders table, the Orders table will have a Customer_ID FK in each row that links to the Customer table
+
 Many to Many: You do not want this in a db, you should instead make a third table to connect the two that just has the FKs for each. Example is Students table and Classes table should have a Students_Classes table that has a row that has 2 FKs, one to Students table and one to the Classes table. 
 
 ER Diagram is the box diagram that I like. Used more for the database side of things (defines tables and their relationships).
+
 UML Diagram is used more commonly as a class diagram for software side of things (defines classes and their attributes and functions).
 
 #### ODS
@@ -69,23 +76,29 @@ Is meant to solve the problem created by map reduce. Map reduce takes a computat
 #### Data Warehouse
 
 Data Warehouse: Repository for structured, filtered data that has already been processed for a specific purpose. Use a very particular schema. Used for SQL DBs. Often used by analysts. More secure. Less flexible. 
+
 Data Mart: A structure/access pattern specific to DW environments, used to retrieve client-facing data. The data mart is a subset of the data warehouse and is usually oriented to a specific business line or team.
 
 #### Data Lake
 
 Data Lake: Vast pool of raw data, purpose of which is not defined. Usually relates to a particular part of the business. Schemaless. Similar to non-relational NoSQL DBs. Often used by data scientists (usually requires more knowledge to use than a DW). Less secure. More flexible. In general, data lakes are good for analyzing data from different, diverse sources from which initial data cleansing can be problematic. Good for IoT and ML.
+
 Data Ocean: Like a data lake but applies to the entire scope of the business.
+
 Data Reservoir: Partly filtered part of the data lake that has been made ready for consumption.
 
 #### Data Lakehouse
 
-PLACEHOLDER
+A data lakehouse is a new, open data management architecture that combines the flexibility, cost-efficiency, and scale of data lakes with the data management and ACID transactions of data warehouses, enabling business intelligence (BI) and machine learning (ML) on all data.
 
 #### ACID
 
 Atomicity: transactions are often composed of multiple statements. Atomicity guarantees that each transaction is treated as a single unit, which either succeeds completely or fails completely, meaning if any of the statements in a transaction fail, the entire transaction fails and the db is left unchanged. Must guarantee atomicity in each situation including power failures, errors, and crashes. Prevents updates from occurring only partially.
+
 Consistency: ensures that a transaction can only bring the db from one valid state to another, maintaining db invariants. Any data written must be valid according to all defined rules, including constraints, cascades, and triggers.
+
 Isolation: transactions are often executed concurrently. Isolation ensures that concurrent execution of transactions leaves the db in the same state that would have been obtained if the transactions were executed sequentially.
+
 Durability: once a transaction is committed, it will remain committed even in a system failure. Usually means completed transactions or effects are recorded in non-volatile memory.
 
 #### Data Modeling
