@@ -1,14 +1,12 @@
 # Architecture
 
-## Technologies
+## Python
 
-### Python
-
-#### REST
+### REST
 
 REST stands for Representational State Transfer. REST APIs must be stateless, meaning it can't store contexts between requests/can't remember who you are. Every request that is received must contain all of the info necessary to process that request. 
 
-#### Requests
+### Requests
 
 `GET`: reads a resource. Idempotent (every time you do it, you should get the same result, it does not change anything)
 
@@ -16,7 +14,7 @@ REST stands for Representational State Transfer. REST APIs must be stateless, me
 
 `DELETE`: removes a resource. Idempotent because if you make the same request multiple times, it has the same request as making it once.
 
-#### CRUD
+### CRUD
 
 Create (POST)
 
@@ -27,9 +25,9 @@ Update (PUT)
 Delete (DELETE)
 
 
-### Databases
+## Databases
 
-#### Relational Databases
+### Relational Databases
 
 `1 to 1`: Can be represented with two tables, think Person table and Contact_Info Table
 
@@ -41,33 +39,33 @@ Delete (DELETE)
 
 `UML Diagram` is used more commonly as a class diagram for software side of things (defines classes and their attributes and functions).
 
-#### ODS (Operational Data Store)
+### ODS (Operational Data Store)
 
 Whatever an application uses to store its data, often changes constantly. Any data that impacts their day to day operations. For example, the DB that Amazon uses that stores every order that gets executed and the info related to it. Different from a data warehouse, which changes every night for instance. ODS is row oriented and can do lots of transactions in a second and can support lots of web servers that are hammering it. Oracle, Microsoft SQL Server, PostgreSQL, MySQL (all of these are OLTP Online Transaction Processing). Best for day to day data high transaction volume (like running an app, website, or a game).
 
-#### Aurora
+### Aurora
 
 A MySQL and PostgreSQL-compatible relational database built for the cloud, that combines the performance and availability of traditional enterprise databases with the simplicity and cost-effectiveness of open source databases. So this is an ODS. Competes with Oracle. Can have massive clusters (Doordash has a single cluster for 10TB and billions of rows, The Pokemon Company handles 300 logins per second, Dow Jones migrated from on-premise to Aurora with no disruption to service). ROW ORIENTED.
 
-#### Redshift
+### Redshift
 
 Makes it simple and cost effective to run high performance queries on petabytes of semi-structured and structured data so that you can build powerful reports and dashboards using QuickSight or other business intelligence tools. Intuit uses Redshift for business intelligence. Used for querying large data sets quickly. (OLAP Online Analytics Processing). Better for analytics. Very expensive, great for massive processing jobs (can do huge parallel processing because has lots of available CPUs). COLUMN ORIENTED (COLUMNAR).
 
-#### Spectrum
+### Spectrum
 
 Serverless. Queries S3. More control over performance because it uses the redshift cluster size. Uses virtual table from glue catalog when querying S3. Use this for queries closely tied to a Redshift DW, can also be used to join data between S3 and Redshift and load the results into Redshift. Cheaper than Redshift because storage in S3 is cheaper and has an ephemeral compute. There is overhead cost, but that can be recouped if you do a giant query and fire up lots of EC2s for a short period of time. Can read data from S3 and transform it and then load it into Redshift. Can also be used for some ad hoc needs.
 
-#### Athena
+### Athena
 
 Serverless. Queries S3. Uses pooled resources provided by AWS, so less control over performance than Spectrum. Uses virtual table from glue catalog when querying S3. Use if all your data is in S3 and you do not want to analyze Redshift data.
 
-#### Data Warehouse
+### Data Warehouse
 
 `Data Warehouse`: Repository for structured, filtered data that has already been processed for a specific purpose. Use a very particular schema. Used for SQL DBs. Often used by analysts. More secure. Less flexible. 
 
 `Data Mart`: A structure/access pattern specific to DW environments, used to retrieve client-facing data. The data mart is a subset of the data warehouse and is usually oriented to a specific business line or team.
 
-#### Data Lake
+### Data Lake
 
 `Data Lake`: Vast pool of raw data, purpose of which is not defined. Usually relates to a particular part of the business. Schemaless. Similar to non-relational NoSQL DBs. Often used by data scientists (usually requires more knowledge to use than a DW). Less secure. More flexible. In general, data lakes are good for analyzing data from different, diverse sources from which initial data cleansing can be problematic. Good for IoT and ML.
 
@@ -75,11 +73,11 @@ Serverless. Queries S3. Uses pooled resources provided by AWS, so less control o
 
 `Data Reservoir`: Partly filtered part of the data lake that has been made ready for consumption.
 
-#### Data Lakehouse
+### Data Lakehouse
 
 A data lakehouse is a new, open data management architecture that combines the flexibility, cost-efficiency, and scale of data lakes with the data management and ACID transactions of data warehouses, enabling business intelligence (BI) and machine learning (ML) on all data.
 
-#### ACID
+### ACID
 
 `Atomicity`: transactions are often composed of multiple statements. Atomicity guarantees that each transaction is treated as a single unit, which either succeeds completely or fails completely, meaning if any of the statements in a transaction fail, the entire transaction fails and the db is left unchanged. Must guarantee atomicity in each situation including power failures, errors, and crashes. Prevents updates from occurring only partially.
 
@@ -89,19 +87,54 @@ A data lakehouse is a new, open data management architecture that combines the f
 
 `Durability`: once a transaction is committed, it will remain committed even in a system failure. Usually means completed transactions or effects are recorded in non-volatile memory.
 
-#### Data Modeling
+### Data Modeling
 
 Data modeling is the method of documenting complex software design as a diagram so that anyone can easily understand. It is a conceptual representation of data objects that are associated between various data objects and the rules.
 
-#### ETL vs ELT
+### ETL (Extract, Transform, Load)
+
+The process data engineers use to extract data from different sources, transform the data into a usable and trusted resource, and load that data into the systems end-users can access and use downstream to solve business problems.
+
+Extract
+
+The first step of this process is extracting data from the target sources that are usually heterogeneous such as business systems, APIs, sensor data, marketing tools, and transaction databases, and others. As you can see, some of these data types are likely to be the structured outputs of widely used systems, while others are semi-structured JSON server logs. There are different ways to perform the extraction: Three Data Extraction methods:
+- Partial Extraction – The easiest way to obtain the data is if the if the source system notifies you when a record has been changed
+- Partial Extraction (with update notification) - Not all systems can provide a notification in case an update has taken place; however, they can point to those records that have been changed and provide an extract of such records.
+- Full extract – There are certain systems that cannot identify which data has been changed at all. In this case, a full extract is the only possibility to extract the data out of the system. This method requires having a copy of the last extract in the same format so you can identify the changes that have been made.
+
+Transform
+
+The second step consists of transforming the raw data that has been extracted from the sources into a format that can be used by different applications. In this stage, data gets cleansed, mapped and transformed, often to a specific schema, so it meets operational needs. This process entails several types of transformation that ensure the quality and integrity of data. Data is not usually loaded directly into the target data source, but instead it is common to have it uploaded into a staging database. This step ensures a quick roll back in case something does not go as planned. During this stage, you have the possibility to generate audit reports for regulatory compliance, or diagnose and repair any data issues.
+
+Load
+
+Finally, the load function is the process of writing converted data from a staging area to a target database, which may or may not have previously existed. Depending on the requirements of the application, this process may be either quite simple or intricate. Each of these steps can be done with ETL tools or custom code.
+
+What is an ETL pipeline?
+
+An ETL pipeline (or data pipeline) is the mechanism by which ETL processes occur. Data pipelines are a set of tools and activities for moving data from one system with its method of data storage and processing to another system in which it can be stored and managed differently. Moreover, pipelines allow for automatically getting information from many disparate sources, then transforming and consolidating it in one high-performing data storage.
+
+Challenges with ETL
+
+While ETL is essential, with this exponential increase in data sources and types, building and maintaining reliable data pipelines has become one of the more challenging parts of data engineering. From the start, building pipelines that ensure data reliability is slow and difficult. Data pipelines are built with complex code and limited reusability. A pipeline built in one environment cannot be used in another, even if the underlying code is very similar, meaning data engineers are often the bottleneck and tasked with reinventing the wheel every time. Beyond pipeline development, managing data quality in increasingly complex pipeline architectures is difficult. Bad data is often allowed to flow through a pipeline undetected, devaluing the entire data set. To maintain quality and ensure reliable insights, data engineers are required to write extensive custom code to implement quality checks and validation at every step of the pipeline. Finally, as pipelines grow in scale and complexity, companies face increased operational load managing them which makes data reliability incredibly difficult to maintain. Data processing infrastructure has to be set up, scaled, restarted, patched, and updated - which translates to increased time and cost. Pipeline failures are difficult to identify and even more difficult to solve - due to lack of visibility and tooling. Regardless of all of these challenges, reliable ETL is an absolutely critical process for any business that hopes to be insights-driven. Without ETL tools that maintain a standard of data reliability, teams across the business are required to blindly make decisions without reliable metrics or reports. To continue to scale, data engineers need tools to streamline and democratize ETL, making the ETL lifecycle easier, and enabling data teams to build and leverage their own data pipelines in order to get to insights faster.
+
+### ETL vs ELT
 
 ELT is better for data lakes because you want to store the raw data, can also go back and do transformations in different ways (might not know the transformations in advance, so just load it first before transforming it). Can also move data more quickly doing ELT. Can also load it and then transform it 2 different ways instead of doing one before loading it.
 
-#### Data Normalization
+### Data Normalization
 
 Repeating for order data city info may be best in order table instead of creating an address table. You need to determine what level of normalization you want. Normalization is the technique to order data into tables to reduce redundancy. Data normalization can slow down updates because there are more tables to update, also creates longer task because there are more tables to join.
 
-#### The Difference Between Data and Big Data Analytics
+### Orchestration
+
+The goal of orchestration is to streamline and optimize the execution of frequent, repeatable processes and thus to help data teams more easily manage complex tasks and workflows. Anytime a process is repeatable, and its tasks can be automated, orchestration can be used to save time, increase efficiency, and eliminate redundancies.
+
+What is the difference between process orchestration and process automation?
+
+While automation and orchestration are highly complementary, they mean different things. Automation is programming a task to be executed without the need for human intervention. Orchestration is the configuration of multiple tasks (some may be automated) into one complete end-to-end process or job. Orchestration software also needs to react to events or activities throughout the process and make decisions based on outputs from one automated task to determine and coordinate the next tasks.
+
+### The Difference Between Data and Big Data Analytics
 
 Prior to the invention of Hadoop, the technologies underpinning modern storage and compute systems were relatively basic, limiting companies mostly to the analysis of "small data." Even this relatively basic form of analytics could be difficult, though, especially the integration of new data sources. With traditional data analytics, which relies on the use of relational databases (like SQL databases), made up of tables of structured data, every byte of raw data needs to be formatted in a specific way before it can be ingested into the database for analysis. This often lengthy process, commonly known as extract, transform, load (or ETL) is required for each new data source. The main problem with this 3-part process and approach is that it’s incredibly time and labor intensive. 
 
@@ -115,15 +148,15 @@ Big data analytics helps organizations harness their data and use advanced data 
 
 Advantages of Using Big Data Analytics Include: Cost reduction, Improved decision making, New products and services, Fraud detection.
 
-#### Apache Hadoop
+### Apache Hadoop
 
 High Availability Distributed Object Oriented Platform (HADOOP). Does Map Reduce.  High availability via parallel distribution of object-oriented tasks. Apache Hadoop is an open source, Java-based software platform that manages data processing and storage for big data applications. The platform works by distributing Hadoop big data and analytics jobs across nodes in a computing cluster, breaking them down into smaller workloads that can be run in parallel. Hadoop isn’t a solution for data storage or relational databases. Instead, its purpose as an open-source framework is to process large amounts of data simultaneously in real-time.
 
-#### Apache Spark
+### Apache Spark
 
 Is meant to solve the problem created by map reduce. Map reduce takes a computation on petabytes of data and breaks it up by parallelizing it and then stitching the small answers back together to get an answer to the big computation that was too big to execute. The problem is map reduce is hard to code (very tedious, writing a lot of the same things over again), so spark (written in scala), is a library that makes it easier to do the map reduce operation. PySpark is just Spark in python and is very similar to Pandas.
 
-#### Hadoop vs Spark
+### Hadoop vs Spark
 
 Both widely used open-source frameworks for big data architectures. Each framework contains an extensive ecosystem of open-source technologies that prepare, process, manage and analyze big data sets. Spark is a Hadoop enhancement to MapReduce. The primary difference between Spark and MapReduce is that Spark processes and retains data in memory for subsequent steps, whereas MapReduce processes data on disk. As a result, for smaller workloads, Spark’s data processing speeds are up to 100x faster than MapReduce. Furthermore, as opposed to the two-stage execution process in MapReduce, Spark creates a Directed Acyclic Graph (DAG) to schedule tasks and the orchestration of nodes across the Hadoop cluster. This task-tracking process enables fault tolerance, which reapplies recorded operations to data from a previous state.
 
@@ -205,11 +238,45 @@ Spark use cases
 - Graph-parallel processing to model data
 - All ML applications
 
-#### Apache Hive
+### Apache Hive
 
 Apache Hive was the early go-to solution for how to query SQL with Hadoop. This module emulates the behavior, syntax and interface of MySQL for programming simplicity. It’s a great option if you already heavily use Java applications as it comes with a built-in Java API and JDBC drivers. Hive offers a quick and straightforward solution for developers but it’s also quite limited as the software’s rather slow and suffers from read-only capabilities.
 
-#### Snowflake Schema
+
+### Apache Parquet
+
+Apache Parquet is an open source, column-oriented data file format designed for efficient data storage and retrieval. It provides efficient data compression and encoding schemes with enhanced performance to handle complex data in bulk. Apache Parquet is designed to be a common interchange format for both batch and interactive workloads. It is similar to other columnar-storage file formats available in Hadoop, namely RCFile and ORC.
+Characteristics of Parquet
+Free and open source file format.
+Language agnostic.
+Column-based format - files are organized by column, rather than by row, which saves storage space and speeds up analytics queries.
+Used for analytics (OLAP) use cases, typically in conjunction with traditional OLTP databases.
+Highly efficient data compression and decompression.
+Supports complex data types and advanced nested data structures.
+Benefits of Parquet
+Good for storing big data of any kind (structured data tables, images, videos, documents).
+Saves on cloud storage space by using highly efficient column-wise compression, and flexible encoding schemes for columns with different data types.
+Increased data throughput and performance using techniques like data skipping, whereby queries that fetch specific column values need not read the entire row of data.
+Apache Parquet is implemented using the record-shredding and assembly algorithm, which accommodates the complex data structures that can be used to store the data. Parquet is optimized to work with complex data in bulk and features different ways for efficient data compression and encoding types. This approach is best especially for those queries that need to read certain columns from a large table. Parquet can only read the needed columns therefore greatly minimizing the IO.
+Advantages of Storing Data in a Columnar Format:
+Columnar storage like Apache Parquet is designed to bring efficiency compared to row-based files like CSV. When querying, columnar storage you can skip over the non-relevant data very quickly. As a result, aggregation queries are less time-consuming compared to row-oriented databases. This way of storage has translated into hardware savings and minimized latency for accessing data.
+Apache Parquet is built from the ground up. Hence it is able to support advanced nested data structures. The layout of Parquet data files is optimized for queries that process large volumes of data, in the gigabyte range for each individual file.
+Parquet is built to support flexible compression options and efficient encoding schemes. As the data type for each column is quite similar, the compression of each column is straightforward (which makes queries even faster). Data can be compressed by using one of the several codecs available; as a result, different data files can be compressed differently.
+Apache Parquet works best with interactive and serverless technologies like AWS Athena, Amazon Redshift Spectrum, Google BigQuery and Google Dataproc.
+Difference Between Parquet and CSV
+CSV is a simple and common format that is used by many tools such as Excel, Google Sheets, and numerous others. Even though the CSV files are the default format for data processing pipelines it has some disadvantages:
+Amazon Athena and Spectrum will charge based on the amount of data scanned per query.
+Google and Amazon will charge you according to the amount of data stored on GS/S3.
+Google Dataproc charges are time-based.
+Parquet has helped its users reduce storage requirements by at least one-third on large datasets, in addition, it greatly improved scan and deserialization time, hence the overall costs. The following table compares the savings as well as the speedup obtained by converting data into Parquet from CSV.
+
+Dataset | Size on Amazon S3 | Query Run Time | Data Scanned | Cost
+--- | --- | --- | --- | ---
+Data stored as CSV files | 1 TB | 236 seconds | 1.15 TB | $5.75
+Data stored in Apache Parquet Format | 130 GB | 6.78 seconds | 2.51 GB | $0.01
+Savings | 87% less when using Parquet | 34x faster | 99% less data scanned | 99.7% savings
+
+### Snowflake Schema
 
 A snowflake schema is a multi-dimensional data model that is an extension of a star schema, where dimension tables are broken down into subdimensions. Snowflake schemas are commonly used for business intelligence and reporting in OLAP data warehouses, data marts, and relational databases.
 
@@ -233,10 +300,10 @@ Drawbacks of snowflake schemas
 - Rigid data model
 - High maintenance costs
 
-#### DBT
+### DBT
 
 DBT is within warehouse airflow, benefit is that you can get the result using sql. Builds based off of how you write sql files, self resolves what happens up and downstream, gives out of the box testing. Lets you write macros. Bridges gap between data analysts and engineers. Reduces barrier to entry to work with data pipelines.
 
-#### Databricks
+### Databricks
 
 Apache tool used to work with Spark. Can use iPython Notebooks. All data, analytics, and AI in one platform. Multicloud and open source.
