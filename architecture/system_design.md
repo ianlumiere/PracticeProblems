@@ -209,9 +209,29 @@ Spark use cases
 
 Apache Hive was the early go-to solution for how to query SQL with Hadoop. This module emulates the behavior, syntax and interface of MySQL for programming simplicity. It’s a great option if you already heavily use Java applications as it comes with a built-in Java API and JDBC drivers. Hive offers a quick and straightforward solution for developers but it’s also quite limited as the software’s rather slow and suffers from read-only capabilities.
 
-#### Snowflake
+#### Snowflake Schema
 
+A snowflake schema is a multi-dimensional data model that is an extension of a star schema, where dimension tables are broken down into subdimensions. Snowflake schemas are commonly used for business intelligence and reporting in OLAP data warehouses, data marts, and relational databases.
 
+In a snowflake schema, engineers break down individual dimension tables into logical subdimensions. This makes the data model more complex, but it can be easier for analysts to work with, especially for certain data types.
+
+It's called a snowflake schema because its entity-relationship diagram (ERD) looks like a snowflake. A snowflake schema diagram with a central fact table that connects to multiple dimensional tables and subdimensional tables via foreign keys.
+
+Snowflake schemas vs. star schemas
+
+Like star schemas, snowflake schemas have a central fact table which is connected to multiple dimension tables via foreign keys. However, the main difference is that they are more normalized than star schemas. Snowflake schemas offer more storage efficiency, due to their tighter adherence to high normalization standards, but query performance is not as good as with more denormalized data models. Denormalized data models like star schemas have more data redundancy (duplication of data), which makes query performance faster at the cost of duplicated data (less joins required).
+
+Benefits of snowflake schemas
+
+- Fast data retrieval
+- Enforces data quality
+- Simple, common data model for data warehousing
+
+Drawbacks of snowflake schemas
+
+- Lots of overhead upon initial setup
+- Rigid data model
+- High maintenance costs
 
 #### DBT
 
