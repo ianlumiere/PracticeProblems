@@ -269,38 +269,34 @@ Apache Kafka is a distributed data store optimized for ingesting and processing 
 
 Kafka provides three main functions to its users:
 
-Publish and subscribe to streams of records
-Effectively store streams of records in the order in which records were generated
-Process streams of records in real time
+1. Publish and subscribe to streams of records
+2. Effectively store streams of records in the order in which records were generated
+3. Process streams of records in real time
+
 Kafka is primarily used to build real-time streaming data pipelines and applications that adapt to the data streams. It combines messaging, storage, and stream processing to allow storage and analysis of both historical and real-time data.  
 
 Why would you use Kafka?
+
 Kafka is used to build real-time streaming data pipelines and real-time streaming applications. A data pipeline reliably processes and moves data from one system to another, and a streaming application is an application that consumes streams of data. For example, if you want to create a data pipeline that takes in user activity data to track how people use your website in real-time, Kafka would be used to ingest and store streaming data while serving reads for the applications powering the data pipeline. Kafka is also often used as a message broker solution, which is a platform that processes and mediates communication between two applications.
 
 How does Kafka work?
+
 Kafka combines two messaging models, queuing and publish-subscribe, to provide the key benefits of each to consumers. Queuing allows for data processing to be distributed across many consumer instances, making it highly scalable. However, traditional queues aren’t multi-subscriber. The publish-subscribe approach is multi-subscriber, but because every message goes to every subscriber it cannot be used to distribute work across multiple worker processes. Kafka uses a partitioned log model to stitch together these two solutions. A log is an ordered sequence of records, and these logs are broken up into segments, or partitions, that correspond to different subscribers. This means that there can be multiple subscribers to the same topic and each is assigned a partition to allow for higher scalability. Finally, Kafka’s model provides replayability, which allows multiple independent applications reading from data streams to work independently at their own rate.
 
-Queuing
-
-Publish-Subscribe
-
 Benefits of Kafka's approach
-Scalable
-Kafka’s partitioned log model allows data to be distributed across multiple servers, making it scalable beyond what would fit on a single server. 
 
-Fast
-Kafka decouples data streams so there is very low latency, making it extremely fast. 
-
-Durable
-Partitions are distributed and replicated across many servers, and the data is all written to disk. This helps protect against server failure, making the data very fault-tolerant and durable. 
+- Scalable: Kafka’s partitioned log model allows data to be distributed across multiple servers, making it scalable beyond what would fit on a single server. 
+- Fast: Kafka decouples data streams so there is very low latency, making it extremely fast. 
+- Durable: Partitions are distributed and replicated across many servers, and the data is all written to disk. This helps protect against server failure, making the data very fault-tolerant and durable. 
 
 Dive deep into Kafka's architecture
+
 Kafka remedies the two different models by publishing records to different topics. Each topic has a partitioned log, which is a structured commit log that keeps track of all records in order and appends new ones in real time. These partitions are distributed and replicated across multiple servers, allowing for high scalability, fault-tolerance, and parallelism. Each consumer is assigned a partition in the topic, which allows for multi-subscribers while maintaining the order of the data. By combining these messaging models, Kafka offers the benefits of both. Kafka also acts as a very scalable and fault-tolerant storage system by writing and replicating all data to disk. By default, Kafka keeps data stored on disk until it runs out of space, but the user can also set a retention limit. Kafka has four APIs:
 
-Producer API: used to publish a stream of records to a Kafka topic.
-Consumer API: used to subscribe to topics and process their streams of records.
-Streams API: enables applications to behave as stream processors, which take in an input stream from topic(s) and transform it to an output stream which goes into different output topic(s).
-Connector API: allows users to seamlessly automate the addition of another application or data system to their current Kafka topics.
+1. Producer API: used to publish a stream of records to a Kafka topic.
+2. Consumer API: used to subscribe to topics and process their streams of records.
+3. Streams API: enables applications to behave as stream processors, which take in an input stream from topic(s) and transform it to an output stream which goes into different output topic(s).
+4. Connector API: allows users to seamlessly automate the addition of another application or data system to their current Kafka topics.
 
 ### Apache Parquet
 
