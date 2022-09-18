@@ -386,6 +386,17 @@ A CROSS JOIN produces a cartesian product between the two tables, returning all 
 
 A FULL OUTER JOIN is a combination of a left outer and right outer join. It returns all rows in both tables that match the query's where clause, and in cases where the on condition can't be satisfied for those rows it puts null values in for the unpopulated fields.
 
+### Self Join
+
+Used for a table to reference itself. Can use all different types of joins depending on what you want to do. For example, let's use the employees table to get an ouput of the employee name and their supervisor name:
+```
+SELECT
+    e.name,
+    s.name AS 'supervisor_name'
+FROM Employee e
+LEFT JOIN Employee s ON e.supervisor_id = s.id -- using a left join since some ee's may not have supervisors
+```
+
 ## UNION
 
 ### UNION vs UNION ALL
@@ -451,9 +462,59 @@ GROUP BY 1 -- need to do this so that the COUNT is totaled correctly, remember t
 
 ## Window Functions
 
-Window functions can do things in a quicker, more concise way than using things like self joins or subqueries. Window functions perform a calculation across a set of rows or a window. Examples include Partition By, Ranking, etc. Unlike GROUP BY where each row is merged into a single resulting row, rows each maintain their separate identities in window functions. Great for calculating statistics within each group or comparing one row with other rows within the same group. Also, GROUP BY can only use aggregate functions like SUM and COUNT, whereas window functions 
+Window functions can do things in a quicker, more concise way than using things like self joins or subqueries. Window functions perform a calculation across a set of rows or a window. Examples include Partition By, Ranking, etc. Unlike GROUP BY where each row is merged into a single resulting row, rows each maintain their separate identities in window functions. Great for calculating statistics within each group or comparing one row with other rows within the same group. Also, GROUP BY can only use aggregate functions like SUM and COUNT, whereas window functions have more options including ranking and analytic functions. 
 
+Basic syntax:
+```
+SELECT
+    fun() OVER()
+FROM table
+```
 
+We need to select a function to apply, which can be aggregate, ranking, or analytic functions. We also need to specify a window frame/group in the ORDER() section. This can be PARTITION BY, ORDER BY, or ROWS.
+
+### OVER clause, Defining a window:
+
+- `PARTITION BY`: divides the results into partitions. Creates window frames by partitioning values. You can partition one or more columns, a subquery, a function, or a user defined variable. You can partition by a combo of these things. Ex:
+    - fun() OVER(PARTITION BY user_id)
+    - fun() OVER(PARTITION BY user_id, date)
+- `ORDER BY`: defines the logical order of the rows within each group. Default is ascending order. Can be used with PARTITION BY. Ex:
+    - fun() OVER(PARTITION BY user_id ORDER BY date DESC)
+- `ROWS/RANGE`: specifies the start and end of each group. This creates fixed sized windows, great for moving averages or running totals. If we do not define this, the default is the start of the window frame to the current row. The difference between ROWS and RANGE is ROWS specify a fixed number of rows that preceed the current row and RANGE specifies the range of values with respect to the value of the  current row. ORDER BY is required before the ROWS/RANGE. RANKING cannot accept the ROWS/RANGE argument. Ex:
+    - ROWS BETWEEN ___ AND ____
+    - UNBOUNDED PROCEEDING ____ PRECEEDING CURRENT ROW
+    - UNBOUNDED FOLLOWING ____ FOLLOWING CURRENT ROW
+    - fun() OVER(ORDER BY date ROWS BETWEEN 3 PRECEEDING AND CURRENT ROW) -- this calculates this row and the 3 preceeding rows
+
+### fun() Options: Aggregate, Ranking, Analytics
+
+#### Aggregate 
+
+These are the same functions that you can use with GROUP BY. They are SUM, COUNT, AVG, MIN, MAX, etc. They compute stats within each group. Ex:
+- MAX(total) OVER(PARTITION BY customer_id) AS 'customer_max_order'
+
+#### Ranking
+
+These calculate the rank of each row within a group. Rank starts with 1. If you do not partition, it will treat the whole table as the window. Options:
+
+- `ROW_NUMBER`: always calculates sequential integers within a group (no ties or gaps). 1, 2, 3, 4, 5
+    - ROW_NUMBER(value) OVER(ORDER BY value)
+- `RANK`: does rankings, but allows for ties, so will not necessarily be sequential and could have gaps. 1, 2, 4, 4, 5
+    - RANK(value) OVER(ORDER BY value)
+- `DENSE_RANK`: does rankings, but also guarantees sequential order and no gaps. 1, 2, 3, 3, 4
+    - DENSE_RANK(value) OVER(ORDER BY value)
+- `NTILE`: useful for selecting top N records per category
+
+#### Analytics
+
+Access the value of multiple rows in a window. Compares multiple rows and calculates the difference between rows. Two most commonly used functions are LAG and LEAD. Need to specify the column name and offset. Offset cannot be negative. Can set a default value to be used if previous/following row does not exist.
+
+- `LAG`: access to rows before the current row
+    - LAG(scalar_expression [, offset] [, default]) OVER([ partition_by_clause] order_by_clause)
+    - LAG(value, 2) OVER(ORDER BY value) AS 'LAG' -- here value is NULL by default if no row is present
+- `LEAD`: access to rows after the current row
+    - LEAD(scalar_expression [, offset] [, default]) OVER([ partition_by_clause] order_by_clause)
+    - LEAD(value, 2, 100) OVER(ORDER BY value) AS 'LEAD' -- here value is 100 by default if no row is present
 
 ## Correlated Subqueries
 
