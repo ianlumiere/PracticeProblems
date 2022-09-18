@@ -216,10 +216,23 @@ WHERE country IN ("Japan", "Australia")
 - `MIN` and `MAX` return the lowest and highest values in a particular column, respectively.
 - `AVG` calculates the average of a group of selected values.
 
+You will need a GROUP BY statement if you are doing more than one resulting column.
+
+This averages the price of all products
 ```
 SELECT 
     AVG(price)
 FROM Products;
+```
+
+This totals the order amount for each customer and orders from highest total spend to lowest
+```
+SELECT
+    customer_id,
+    SUM(total) AS 'total_spend'
+FROM orders
+GROUP BY customer_id
+ORDER BY 2 DESC
 ```
 
 ## Calculated Fields
@@ -320,9 +333,9 @@ WHERE
 	salary_rank = 2;	
 ```
 
-## CASE Statements
+## CASE WHEN Statements
 
-The CASE statement goes through conditions and returns a value when the first condition is met (like an if-then-else statement). So, once a condition is true, it will stop reading and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE part and no conditions are true, it returns NULL.
+The CASE WHEN statement goes through conditions and returns a value when the first condition is met (like an if-then-else statement). So, once a condition is true, it will stop reading and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE part and no conditions are true, it returns NULL.
 
 ```
 SELECT 
@@ -334,6 +347,22 @@ SELECT
         ELSE 'The quantity is under 30'
     END AS QuantityText
 FROM OrderDetails;
+```
+
+CASE WHEN statements are often used for categorization questions.
+
+This will go through every row and will categorize each result into its appropriate bucket and return the count:
+```
+SELECT
+    CASE
+        WHEN size < 5 THEN 'small'
+        WHEN size < 10 THEN 'medium'
+        WHEN size < 15 THEN 'large'
+        ELSE 'extra_large'
+    END AS bin
+    COUNT(*) AS total -- this column will show the total count for each category
+FROM orders
+GROUP BY 1 -- need to do this so that the COUNT is totaled correctly, remember to always have a GROUP BY for aggregate functions
 ```
 
 ## COALESCE
@@ -357,6 +386,17 @@ A CROSS JOIN produces a cartesian product between the two tables, returning all 
 
 A FULL OUTER JOIN is a combination of a left outer and right outer join. It returns all rows in both tables that match the query's where clause, and in cases where the on condition can't be satisfied for those rows it puts null values in for the unpopulated fields.
 
+### Self Join
+
+Used for a table to reference itself. Can use all different types of joins depending on what you want to do. For example, let's use the employees table to get an ouput of the employee name and their supervisor name:
+```
+SELECT
+    e.name,
+    s.name AS 'supervisor_name'
+FROM Employee e
+LEFT JOIN Employee s ON e.supervisor_id = s.id -- using a left join since some ee's may not have supervisors
+```
+
 ## UNION
 
 ### UNION vs UNION ALL
@@ -365,8 +405,9 @@ UNION ALL keeps all of the records from each of the original data sets, UNION re
 
 ## GROUP BY
 
-Grouping lets you divide data into logical sets so that you can perform aggregate calculations on each group.
+Grouping lets you divide data into logical sets so that you can perform aggregate calculations on each group. Used for aggregate functions like SUM, COUNT, MIN, MAX, AVG
 
+This will give you a list of vendors and their product count as long as they have at least 2 products
 ```
 SELECT
     vend_id,
@@ -386,6 +427,113 @@ SELECT
 FROM Products
 GROUP BY category_id
 ```
+
+This will give you the first order of each customer
+```
+SELECT 
+    H.transaction_no, 
+    H.customer_id, 
+    H.operator_id, 
+    H.purchase_date
+FROM Sales_Transactions_Header H
+INNER JOIN
+    (
+        SELECT 
+            customer_id, 
+            MIN(purchase_date) As first_occurence
+        FROM Sales_Transactions_Header
+        GROUP BY customer_id) X
+    ON H.customer_id = X.customer_id AND H.purchase_date = X.first_occurence
+```
+
+This will go through every row and will categorize each result into its appropriate bucket and return the count:
+```
+SELECT
+    CASE
+        WHEN size < 5 THEN 'small'
+        WHEN size < 10 THEN 'medium'
+        WHEN size < 15 THEN 'large'
+        ELSE 'extra_large'
+    END AS bin
+    COUNT(*) AS total -- this column will show the total count for each category
+FROM orders
+GROUP BY 1 -- need to do this so that the COUNT is totaled correctly, remember to always have a GROUP BY for aggregate functions
+```
+
+## Window Functions
+
+Window functions can do things in a quicker, more concise way than using things like self joins or subqueries. Window functions perform a calculation across a set of rows or a window. Examples include Partition By, Ranking, etc. Unlike GROUP BY where each row is merged into a single resulting row, rows each maintain their separate identities in window functions. Great for calculating statistics within each group or comparing one row with other rows within the same group. Also, GROUP BY can only use aggregate functions like SUM and COUNT, whereas window functions have more options including ranking and analytic functions. 
+
+Basic syntax:
+```
+SELECT
+    fun() OVER()
+FROM table
+```
+
+We need to select a function to apply, which can be aggregate, ranking, or analytic functions. We also need to specify a window frame/group in the ORDER() section. This can be PARTITION BY, ORDER BY, or ROWS.
+
+### OVER clause, Defining a window:
+
+- `PARTITION BY`: divides the results into partitions. Creates window frames by partitioning values. You can partition one or more columns, a subquery, a function, or a user defined variable. You can partition by a combo of these things. Ex:
+    - fun() OVER(PARTITION BY user_id)
+    - fun() OVER(PARTITION BY user_id, date)
+- `ORDER BY`: defines the logical order of the rows within each group. Default is ascending order. Can be used with PARTITION BY. Ex:
+    - fun() OVER(PARTITION BY user_id ORDER BY date DESC)
+- `ROWS/RANGE`: specifies the start and end of each group. This creates fixed sized windows, great for moving averages or running totals. If we do not define this, the default is the start of the window frame to the current row. The difference between ROWS and RANGE is ROWS specify a fixed number of rows that preceed the current row and RANGE specifies the range of values with respect to the value of the  current row. ORDER BY is required before the ROWS/RANGE. RANKING cannot accept the ROWS/RANGE argument. Ex:
+    - ROWS BETWEEN ___ AND ____
+    - UNBOUNDED PROCEEDING ____ PRECEEDING CURRENT ROW
+    - UNBOUNDED FOLLOWING ____ FOLLOWING CURRENT ROW
+    - fun() OVER(ORDER BY date ROWS BETWEEN 3 PRECEEDING AND CURRENT ROW) -- this calculates this row and the 3 preceeding rows
+
+### fun() Options: Aggregate, Ranking, Analytics
+
+#### Aggregate 
+
+These are the same functions that you can use with GROUP BY. They are SUM, COUNT, AVG, MIN, MAX, etc. They compute stats within each group. Ex:
+- MAX(total) OVER(PARTITION BY customer_id) AS 'customer_max_order'
+
+#### Ranking
+
+These calculate the rank of each row within a group. Rank starts with 1. If you do not partition, it will treat the whole table as the window. Options:
+
+- `ROW_NUMBER`: always calculates sequential integers within a group (no ties or gaps). 1, 2, 3, 4, 5
+    - ROW_NUMBER(value) OVER(ORDER BY value)
+- `RANK`: does rankings, but allows for ties, so will not necessarily be sequential and could have gaps. 1, 2, 4, 4, 5
+    - RANK(value) OVER(ORDER BY value)
+- `DENSE_RANK`: does rankings, but also guarantees sequential order and no gaps. 1, 2, 3, 3, 4
+    - DENSE_RANK(value) OVER(ORDER BY value)
+- `NTILE`: useful for selecting top N records per category
+
+#### Analytics
+
+Access the value of multiple rows in a window. Compares multiple rows and calculates the difference between rows. Two most commonly used functions are LAG and LEAD. Need to specify the column name and offset. Offset cannot be negative. Can set a default value to be used if previous/following row does not exist.
+
+- `LAG`: access to rows before the current row
+    - LAG(scalar_expression [, offset] [, default]) OVER([ partition_by_clause] order_by_clause)
+    - LAG(value, 2) OVER(ORDER BY value) AS 'LAG' -- here value is NULL by default if no row is present
+- `LEAD`: access to rows after the current row
+    - LEAD(scalar_expression [, offset] [, default]) OVER([ partition_by_clause] order_by_clause)
+    - LEAD(value, 2, 100) OVER(ORDER BY value) AS 'LEAD' -- here value is 100 by default if no row is present
+
+## Correlated Subqueries
+
+A correlated subquery is evaluated once for each row processed by the parent statement. The parent statement can be a SELECT, UPDATE, or DELETE statement. A correlated subquery is one way of reading every row in a table and comparing values in each row against related data. It is used whenever a subquery must return a different result or set of results for each candidate row considered by the main query. In other words, you can use a correlated subquery to answer a multipart question whose answer depends on the value in each row processed by the parent statement. Ex:
+
+```
+SELECT column1, column2, ....
+FROM table1 outer
+WHERE column1 operator
+                    (SELECT column1, column2
+                     FROM table2
+                     WHERE expr1 = 
+                               outer.expr2);
+```
+
+## Comments
+- `-- can be added to the end of the line`
+- `# this will make the whole line a comment`
+- `/* this can be a multi line comment */`
 
 ## INSERT
 
@@ -407,25 +555,6 @@ UPDATE table_name
 SET column1 = value1, column2 = value2, ...
 WHERE condition;
 ```
-
-## Correlated Subqueries
-
-A correlated subquery is evaluated once for each row processed by the parent statement. The parent statement can be a SELECT, UPDATE, or DELETE statement. A correlated subquery is one way of reading every row in a table and comparing values in each row against related data. It is used whenever a subquery must return a different result or set of results for each candidate row considered by the main query. In other words, you can use a correlated subquery to answer a multipart question whose answer depends on the value in each row processed by the parent statement. Ex:
-
-```
-SELECT column1, column2, ....
-FROM table1 outer
-WHERE column1 operator
-                    (SELECT column1, column2
-                     FROM table2
-                     WHERE expr1 = 
-                               outer.expr2);
-```
-
-## Comments
-- `-- can be added to the end of the line`
-- `# this will make the whole line a comment`
-- `/* this can be a multi line comment */`
 
 ## General Notes
 

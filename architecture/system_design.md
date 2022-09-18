@@ -1,5 +1,17 @@
 # Architecture
 
+## General System Design
+
+### Whiteboarding
+
+Tips
+
+1. Clarify the Requirements. Restate the prompt and gather more info. Say your assumptions. Acknowledge the scale. Discuss core features. Write these requirements down. Once they are defined, you can address them separately.
+2. Define your Data Model. Different data types will need to be stored and accessed in different ways (Relational DB, DW, Data Lake).
+3. Take notes on Decisions. Clearly communicate tradeoffs you have to make on decisions.
+4. Diagram your Design. Start with the simplest design first and then talk through how each component relates to the other. Tie them back to requirements. Elaborate and add components as you scale and optimize your system. Components are shapes, relationships are arrows. Label everything and be consistent. DBs are usually represented as cylinders. Start with database and talk about how it interacts with components based on the user's request.
+5. Keep things Legible. Maintain some whitespace.
+
 ## Python
 
 ### REST
@@ -24,6 +36,24 @@ Update (PUT)
 
 Delete (DELETE)
 
+## Distributed System Design
+
+### Overview
+
+- Verticle scaling: increasing power to get higher output.
+- Horizontal scaling: increasing worker count to get higher output.
+- Keep backups and avoid single point of failures.
+- Use systems for what they specialize at (DL for ML, DW for BI).
+- Microservice architecture: break work out into defined responsibilities and pass info between the microservices
+- Handle outages by distributing your system so that it is in different zones.
+- Load balancers are used to distribute work effectively across these distributed zones. When a user makes a request, that user sends it to a central location that can best serve that user by routing it optimally to serve the desired purpose (ex: quickest response time).
+- Decoupling the system means you separate out responsibilities so that components do not care what they are receiving, as long as it is in the right format and it can continue in the system (doordash driver doesn't care if they pick up pizza or burgers, they do the same job either way). This lets you handle separate systems more efficiently.
+- Logging and metrics on performance and doing ML to recognize patterns.
+- All the above together gives us a system with Scalability, Fault Tolerance, and Extensiblity (flexible to change)
+
+### Streaming
+
+We have lots of messages/logs and Kafka is a distributed, scalable queue that can manage these events so that we can process them. A stream processor, like Spark, will read the message off of the queue and do micro batching. A Spark driver can look at the message and know what the load is on each of the workers and assign the message to the worker with the lowest current load (the driver does not do the actual computation, just the distribution of the work). These different workers can then all write to the same centralized location. You can then do analytics at this centralized location (assume it is a DB). When you need more processing power, you can add more workers to handle more messages. 
 
 ## Databases
 
@@ -75,7 +105,30 @@ Serverless. Queries S3. Uses pooled resources provided by AWS, so less control o
 
 ### Data Lakehouse
 
-A data lakehouse is a new, open data management architecture that combines the flexibility, cost-efficiency, and scale of data lakes with the data management and ACID transactions of data warehouses, enabling business intelligence (BI) and machine learning (ML) on all data.
+A data lakehouse is a new, open data management architecture that combines the flexibility, cost-efficiency, and scale of data lakes with the data management and ACID transactions of data warehouses, enabling business intelligence (BI) and machine learning (ML) on all data. Simple, Flexible, and Low Cost.
+
+Data lakehouses are enabled by a new, open system design: implementing similar data structures and data management features to those in a data warehouse, directly on the kind of low-cost storage used for data lakes. Merging them together into a single system means that data teams can move faster as they are able to use data without needing to access multiple systems. Data lakehouses also ensure that teams have the most complete and up-to-date data available for data science, machine learning, and business analytics projects. Evolution of data storage, from data warehouses to data lakes to data lakehouses
+
+Key Technology Enabling the Data Lakehouse
+
+There are a few key technology advancements that have enabled the data lakehouse:
+- metadata layers for data lakes
+- new query engine designs providing high-performance SQL execution on data lakes
+- optimized access for data science and machine learning tools.
+
+Metadata layers, like the open source Delta Lake, sit on top of open file formats (e.g. Parquet files) and track which files are part of different table versions to offer rich management features like ACID-compliant transactions. The metadata layers enable other features common in data lakehouses, like support for streaming I/O (eliminating the need for message buses like Kafka), time travel to old table versions, schema enforcement and evolution, as well as data validation. Performance is key for data lakehouses to become the predominant data architecture used by businesses today as it's one of the key reasons that data warehouses exist in the two-tier architecture. While data lakes using low-cost object stores have been slow to access in the past, new query engine designs enable high-performance SQL analysis. These optimizations include caching hot data in RAM/SSDs (possibly transcoded into more efficient formats), data layout optimizations to cluster co-accessed data, auxiliary data structures like statistics and indexes, and vectorized execution on modern CPUs. Combining these technologies together enables data lakehouses to achieve performance on large datasets that rivals popular data warehouses, based on TPC-DS benchmarks. The open data formats used by data lakehouses (like Parquet), make it very easy for data scientists and machine learning engineers to access the data in the lakehouse. They can use tools popular in the DS/ML ecosystem like pandas, TensorFlow, PyTorch and others that can already access sources like Parquet and ORC. Spark DataFrames even provide declarative interfaces for these open formats which enable further I/O optimization. The other features of a data lakehouse, like audit history and time travel, also help with improving reproducibility in machine learning. To learn more about the technology advances underpinning the move to the data lakehouse, see the CIDR paper Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics and another academic paper Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores.
+
+Background on Data Warehouses
+
+Data warehouses have a long history in decision support and business intelligence applications, though were not suited or were expensive for handling unstructured data, semi-structured data, and data with high variety, velocity, and volume.
+
+Emergence of Data Lakes
+
+Data lakes then emerged to handle raw data in a variety of formats on cheap storage for data science and machine learning, though lacked critical features from the world of data warehouses: they do not support transactions, they do not enforce data quality, and their lack of consistency/isolation makes it almost impossible to mix appends and reads, and batch and streaming jobs.
+
+Common Two-Tier Data Architecture
+
+Data teams consequently stitch these systems together to enable BI and ML across the data in both these systems, resulting in duplicate data, extra infrastructure cost, security challenges, and significant operational costs. In a two-tier data architecture, data is ETLd from the operational databases into a data lake. This lake stores the data from the entire enterprise in low-cost object storage and is stored in a format compatible with common machine learning tools but is often not organized and maintained well. Next, a small segment of the critical business data is ETLd once again to be loaded into the data warehouse for business intelligence and data analytics. Due to multiple ETL steps, this two-tier architecture requires regular maintenance and often results in data staleness, a significant concern of data analysts and data scientists alike according to recent surveys from Kaggle and Fivetran.
 
 ### ACID
 
@@ -371,4 +424,4 @@ DBT is within warehouse airflow, benefit is that you can get the result using sq
 
 ### Databricks
 
-Apache tool used to work with Spark. Can use iPython Notebooks. All data, analytics, and AI in one platform. Multicloud and open source.
+Tool used to work with Spark. Can use iPython Notebooks. All data, analytics, and AI in one platform. Multicloud and open source.
