@@ -216,10 +216,23 @@ WHERE country IN ("Japan", "Australia")
 - `MIN` and `MAX` return the lowest and highest values in a particular column, respectively.
 - `AVG` calculates the average of a group of selected values.
 
+You will need a GROUP BY statement if you are doing more than one resulting column.
+
+This averages the price of all products
 ```
 SELECT 
     AVG(price)
 FROM Products;
+```
+
+This totals the order amount for each customer and orders from highest total spend to lowest
+```
+SELECT
+    customer_id,
+    SUM(total) AS 'total_spend'
+FROM orders
+GROUP BY customer_id
+ORDER BY 2 DESC
 ```
 
 ## Calculated Fields
@@ -320,9 +333,9 @@ WHERE
 	salary_rank = 2;	
 ```
 
-## CASE Statements
+## CASE WHEN Statements
 
-The CASE statement goes through conditions and returns a value when the first condition is met (like an if-then-else statement). So, once a condition is true, it will stop reading and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE part and no conditions are true, it returns NULL.
+The CASE WHEN statement goes through conditions and returns a value when the first condition is met (like an if-then-else statement). So, once a condition is true, it will stop reading and return the result. If no conditions are true, it returns the value in the ELSE clause. If there is no ELSE part and no conditions are true, it returns NULL.
 
 ```
 SELECT 
@@ -334,6 +347,22 @@ SELECT
         ELSE 'The quantity is under 30'
     END AS QuantityText
 FROM OrderDetails;
+```
+
+CASE WHEN statements are often used for categorization questions.
+
+This will go through every row and will categorize each result into its appropriate bucket and return the count:
+```
+SELECT
+    CASE
+        WHEN size < 5 THEN 'small'
+        WHEN size < 10 THEN 'medium'
+        WHEN size < 15 THEN 'large'
+        ELSE 'extra_large'
+    END AS bin
+    COUNT(*) AS total -- this column will show the total count for each category
+FROM orders
+GROUP BY 1 -- need to do this so that the COUNT is totaled correctly, remember to always have a GROUP BY for aggregate functions
 ```
 
 ## COALESCE
@@ -365,8 +394,9 @@ UNION ALL keeps all of the records from each of the original data sets, UNION re
 
 ## GROUP BY
 
-Grouping lets you divide data into logical sets so that you can perform aggregate calculations on each group.
+Grouping lets you divide data into logical sets so that you can perform aggregate calculations on each group. Used for aggregate functions like SUM, COUNT, MIN, MAX, AVG
 
+This will give you a list of vendors and their product count as long as they have at least 2 products
 ```
 SELECT
     vend_id,
@@ -386,6 +416,63 @@ SELECT
 FROM Products
 GROUP BY category_id
 ```
+
+This will give you the first order of each customer
+```
+SELECT 
+    H.transaction_no, 
+    H.customer_id, 
+    H.operator_id, 
+    H.purchase_date
+FROM Sales_Transactions_Header H
+INNER JOIN
+    (
+        SELECT 
+            customer_id, 
+            MIN(purchase_date) As first_occurence
+        FROM Sales_Transactions_Header
+        GROUP BY customer_id) X
+    ON H.customer_id = X.customer_id AND H.purchase_date = X.first_occurence
+```
+
+This will go through every row and will categorize each result into its appropriate bucket and return the count:
+```
+SELECT
+    CASE
+        WHEN size < 5 THEN 'small'
+        WHEN size < 10 THEN 'medium'
+        WHEN size < 15 THEN 'large'
+        ELSE 'extra_large'
+    END AS bin
+    COUNT(*) AS total -- this column will show the total count for each category
+FROM orders
+GROUP BY 1 -- need to do this so that the COUNT is totaled correctly, remember to always have a GROUP BY for aggregate functions
+```
+
+## Window Functions
+
+Window functions can do things in a quicker, more concise way than using things like self joins or subqueries. Window functions perform a calculation across a set of rows or a window. Examples include Partition By, Ranking, etc. Unlike GROUP BY where each row is merged into a single resulting row, rows each maintain their separate identities in window functions. Great for calculating statistics within each group or comparing one row with other rows within the same group. Also, GROUP BY can only use aggregate functions like SUM and COUNT, whereas window functions 
+
+
+
+## Correlated Subqueries
+
+A correlated subquery is evaluated once for each row processed by the parent statement. The parent statement can be a SELECT, UPDATE, or DELETE statement. A correlated subquery is one way of reading every row in a table and comparing values in each row against related data. It is used whenever a subquery must return a different result or set of results for each candidate row considered by the main query. In other words, you can use a correlated subquery to answer a multipart question whose answer depends on the value in each row processed by the parent statement. Ex:
+
+```
+SELECT column1, column2, ....
+FROM table1 outer
+WHERE column1 operator
+                    (SELECT column1, column2
+                     FROM table2
+                     WHERE expr1 = 
+                               outer.expr2);
+```
+
+## Comments
+- `-- can be added to the end of the line`
+- `# this will make the whole line a comment`
+- `/* this can be a multi line comment */`
 
 ## INSERT
 
@@ -407,25 +494,6 @@ UPDATE table_name
 SET column1 = value1, column2 = value2, ...
 WHERE condition;
 ```
-
-## Correlated Subqueries
-
-A correlated subquery is evaluated once for each row processed by the parent statement. The parent statement can be a SELECT, UPDATE, or DELETE statement. A correlated subquery is one way of reading every row in a table and comparing values in each row against related data. It is used whenever a subquery must return a different result or set of results for each candidate row considered by the main query. In other words, you can use a correlated subquery to answer a multipart question whose answer depends on the value in each row processed by the parent statement. Ex:
-
-```
-SELECT column1, column2, ....
-FROM table1 outer
-WHERE column1 operator
-                    (SELECT column1, column2
-                     FROM table2
-                     WHERE expr1 = 
-                               outer.expr2);
-```
-
-## Comments
-- `-- can be added to the end of the line`
-- `# this will make the whole line a comment`
-- `/* this can be a multi line comment */`
 
 ## General Notes
 
