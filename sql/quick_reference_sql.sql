@@ -144,3 +144,11 @@ FROM (
 ) l
 JOIN Accounts a ON a.id = l.id
 WHERE DATEDIFF(day, lag4, login_date) = 4
+
+-- 14 get each customer's order and add a percentage of total spend
+SELECT
+    first_name,
+    order_details,
+    round(order_cost / SUM(order_cost) OVER (PARTITION BY customer_id)::FLOAT * 100) AS 'percent_total_spend'
+FROM orders o
+INNER JOIN customers c ON c.id = o.customer_id
