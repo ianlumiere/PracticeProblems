@@ -473,7 +473,7 @@ FROM table
 
 We need to select a function to apply, which can be aggregate, ranking, or analytic functions. We also need to specify a window frame/group in the ORDER() section. This can be PARTITION BY, ORDER BY, or ROWS.
 
-### OVER clause, Defining a window:
+### OVER clause, Defining a window: 
 
 - `PARTITION BY`: divides the results into partitions. Creates window frames by partitioning values. You can partition one or more columns, a subquery, a function, or a user defined variable. You can partition by a combo of these things. Ex:
     - fun() OVER(PARTITION BY user_id)
