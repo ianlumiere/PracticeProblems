@@ -490,7 +490,7 @@ We need to select a function to apply, which can be aggregate, ranking, or analy
 
 #### Aggregate 
 
-These are the same functions that you can use with GROUP BY. They are SUM, COUNT, AVG, MIN, MAX, etc. They compute stats within each group. Ex:
+These are the same functions that you can use with GROUP BY. They are `SUM`, `COUNT`, `AVG`, `MIN`, `MAX`, etc. They compute stats within each group. Ex:
 - MAX(total) OVER(PARTITION BY customer_id) AS 'customer_max_order'
 
 #### Ranking
