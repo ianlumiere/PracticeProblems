@@ -171,7 +171,7 @@ FROM (
     FROM fraud_score) a
 WHERE percentile <=5 -- This will get top 5 percent!
 
--- 17 Get year over year growth for number of hosts
+-- 17 get year over year growth for number of hosts
 SELECT
     year,
     cur_year_host,
@@ -192,3 +192,35 @@ FROM (
     ) t1
 ) t2
 
+-- 18 convert date to YYYY-MM
+SELECT
+    to_char(CAST(created_at AS date), 'YYYY-MM') AS 'year_month'
+FROM orders
+
+-- 19 calculate month over month percent change in revenue
+SELECT
+    to_char(created_at::date, 'YYYY-MM') AS year_month,
+    ROUND((SUM(value) - LAG(SUM(value), 1) OVER (w)) / 
+        LAG(SUM(value), 1) OVER (w) * 100, 2) AS revenue_diff
+FROM transactions
+GROUP BY year_month
+WINDOW w AS (ORDER BY to_char(created_at::date, 'YYYY-MM')) -- this can be referenced above
+ORDER BY year_month ASC
+
+-- 20 calculate what percentage of users clicked the top 3 results
+SELECT
+    (COUNT(CASE WHEN position <= 3 has_clicked = 'yes' THEN b.search_id ELSE NULL END)::FLOAT /
+    COUNT(*)) * 100 AS percentage
+FROM results a
+LEFT JOIN search_events b ON a.result_id = b.search_id
+
+-- 21 bucket number of reviews into different labels
+SELECT
+    user_id,
+    CASE
+        WHEN num_reviews = 0 THEN 'new'
+        WHEN num_reviews BETWEEN 1 AND 5 'starting' -- any count of 5 will hit starting and not active
+        WHEN num_reviews BETWEEN 6 AND 10 'active' -- could overlap and do 5 instead of 6, but it is less clear
+        WHEN num_reviews > 10 THEN 'very_active'
+    END AS activity_level
+FROM reviews

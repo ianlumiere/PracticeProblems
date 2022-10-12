@@ -199,6 +199,10 @@ Symbol | Function |
 `%` | Match any number of occurrences of any character and also works for no characters.
 `_` | Matches any single character, but will not match for no characters.
 
+### ILIKE
+
+Just like LIKE, but ignores the casing of the characters.
+
 ### IN
 
 You can check to see if the clause is in a list of things. Ex:
