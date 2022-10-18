@@ -477,6 +477,8 @@ FROM table
 
 We need to select a function to apply, which can be aggregate, ranking, or analytic functions. We also need to specify a window frame/group in the ORDER() section. This can be PARTITION BY, ORDER BY, or ROWS.
 
+NOTE Data Skew/Hot Spots: if you have one partition key that has way more data than every other key, you will get a hot spot and it will really bog down your query's performance. One way around this is to use salting. Salting adds random values to push Spark partition data evenly. It shuffles data into batches and then does the work, as opposed to doing it all at once. This works well because at the end, it is a simple aggregation, so breaking it out into smaller chunks is fine. Another way around this is to use progressive window functions. Programatically, some programs can see in advance what is the problematic key and can break they query into 2 queries, one where the window function is done but removes the problematic key with a where clause and then another query where it only operates on the problematic key and does not do the window function PARTITION BY.
+
 ### OVER clause, Defining a window: 
 
 - `PARTITION BY`: divides the results into partitions. Creates window frames by partitioning values. You can partition one or more columns, a subquery, a function, or a user defined variable. You can partition by a combo of these things. Ex:
@@ -512,6 +514,8 @@ These calculate the rank of each row within a group. Rank starts with 1. If you 
 #### Analytics
 
 Access the value of multiple rows in a window. Compares multiple rows and calculates the difference between rows. Two most commonly used functions are LAG and LEAD. Need to specify the column name and offset. Offset cannot be negative. Can set a default value to be used if previous/following row does not exist.
+
+NOTE: be careful with LEAD and LAG. Remember that one row will be missing values when you look forward or backward, so usually you want to make sure you look forward with LEAD if you do not want to miss the calculation on the first row and vice versa.
 
 - `LAG`: access to rows before the current row
     - LAG(scalar_expression [, offset] [, default]) OVER([ partition_by_clause] order_by_clause)
