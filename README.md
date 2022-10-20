@@ -41,6 +41,7 @@ O(1)   O(log n)   O(n)   O(n log n)   O(n^2)   O(2^n)   O(n!)
 - You drop constants in big O, so O(2n) is really O(n)
 - If you have different inputs, then use different variables to represent them. So if you iterate through array A and have a nested iteration through array B, the complexity is actually O(A*B), NOT O(A^2)
 - Drop non dominant terms, so if you have one step that is O(n), and another step that is O(log n), O(n) dominates O(log n), so O(n) + O(log n) gets reduced and the overall complexity is O(n)
+- If you are creating a dictionary, the space complexity will be the number of keys you have and values. So if you have a bounded dataset like an alpha numeric string, while the string can be millions of characters, the number of keys will only be the case sensative alphabet letters and numbers 0 through 9, and then whatever is held as a value, usually a number representing a count.
 
 # General Tips
 Constantly think out loud, including talking about what you are not doing and why.
