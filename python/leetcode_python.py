@@ -1113,3 +1113,36 @@ def sum_missing_most_common(list_in):
             remove += (value * key)
     
     return sum - remove
+
+# get earliest letter that appears the most in a string
+
+def earliest(a)
+    keys = {}
+    max = 0
+    earliest_location = 1000000
+    answer = ''
+
+    for index, letter in enumerate(a):
+        # create dictionary or modify
+        if letter in keys:
+            keys[letter]["value"] += 1
+        else:
+            keys[letter]= {
+                "value": 1,
+                "location": index
+            }
+
+        # check current answer
+        if keys[letter]["value"] > max:
+            max = keys[letter]["value"]
+            earliest_location = keys[letter]["location"]
+            answer = letter
+        elif keys[letter]["value"] == max:
+            # only change if the first location of the current is earlier than existing one
+            if keys[letter]["location"] < earliest_location:
+                earliest_location = keys[letter]["location"]
+                answer = letter
+
+    return answer
+
+# earliest("hellothisisatest")
