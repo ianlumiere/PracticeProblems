@@ -80,12 +80,21 @@ Load Balancer ---> App Server (read) ---> Cache (Redis) <--,  V                 
                         `------upload image-----------------------------------------------^
 
 NGINX for Load Balancing
+
 App Engine (platform as a service, fully managed, auto scaling, serverless, host web apps at scale, can scale to 0 if no requests) or Compute Engine (infra as a a service, costs less, more flexibility, harder to use) for Servers
+
 Pub/Sub for Queue (push or pull, replaces Kafka)
+
 Dataflow for Pipelines
+
 Dataproc for Spark
+
 BigTable (time series or transactions) or Firestore for NoSQL
+
 Cloud SQL MySQL for OLTP
+
 BigQuery for OLAP
+
 GCS for storage
+
 Datalab for Jupyter Notebooks

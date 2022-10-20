@@ -1116,7 +1116,7 @@ def sum_missing_most_common(list_in):
 
 # get earliest letter that appears the most in a string
 
-def earliest(a)
+def earliest(a):
     keys = {}
     max = 0
     earliest_location = 1000000
