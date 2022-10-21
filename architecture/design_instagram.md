@@ -109,7 +109,29 @@ BASE (NoSQL)
 - `Soft state`: replicas are not consistent all the time.
 - `Eventual consistency`: data will become consistent at some point in time, with no guarantee when.
 
+- Difference between set and list: set is an unordered collection with no duplicates; list is ordered with duplicates allowed.
+- Hadoop Ecosystem: 
+- Complexity of different searching algos: Merge Sort O(n log n), Binary Search O(log n)
+- CI/CD and why it is useful: Smaller code changes are simpler (more atomic) and have fewer unintended consequences. Fault isolation is simpler and quicker. Mean time to resolution (MTTR) is shorter because of the smaller code changes and quicker fault isolation.
+- Map Reduce and how to implement: 
+- Map Reduce advantages and disadvantages:
+- CAP Theorum in distributed computing: (Consistency, Availability, Partition Tolerance) The CAP theorem is a belief from theoretical computer science about distributed data stores that claims, in the event of a network failure on a distributed database, it is possible to provide either consistency or availability—but not both. Cloud Spanner tries to reduce this and is mostly a CA system. Consistency: DB transactions must only change data with specific rules. Transactions have to be complete before data is read. Availability: data is always available to serve. Partition Tolerance: system must tolerate failures.
+- Probabilistic Data Structures: Probabilistic data structures can't give you a definite answer, instead they provide you with a reasonable approximation of the answer and a way to approximate this estimation. They are extremely useful for big data and streaming application because they allow to dramatically decrease the amount of memory needed (in comparison to data structures that give you exact answers). In majority of the cases these data structures use hash functions to randomize the items. Because they ignore collisions they keep the size constant, but this is also a reason why they can't give you exact values. The advantages they bring: they use small amount of memory (you can control how much), they can be easily parallelizable (hashes are independent), they have constant query time (not even amortized constant like in dictionary).
+- Hashing algos: Hash method in Python is a module that is used to return the hash value of an object. In programming, the hash method is used to return integer values that are used to compare dictionary keys using a dictionary look up feature.
+- What is a linked list: Sequence of data elements connected by a link (reference to another node). Each uses a pointer to connect to another data element.
+- How do you delete a linked list: Store the address of the first node in a pointer, move the head node to the next node, dispose or free memory  of the pointer node.
+- LINUX list files: `ls -laSt`
+- LINUX move files: `mv <source> <destination>`
+- LINUX rename files: `mv <current_name> <new_name>`
+- Docker pros and cons: Pros: consistency, automation, stable, takes less space than VMs. Cons: learning curve, constantly developing.
+- Explain standard deviation: A standard deviation is a measure of how dispersed the data is in relation to the mean. Low standard deviation means data are clustered around the mean, and high standard deviation indicates data are more spread out. Like how the mean tells you where the data is centered, the standard deviation gives you the width of your bell curve. It tells you how narrow or wide the bell curve is. Imagine an income of a rural area where most ppl make close to the mean (tight standard deviation), compared to a city (wide standard deviation). 68% of values are within the first standard deviation, 95% of values are within the second standard deviation.
+- Denormalized DB pros and cons: Normalization is the technique to order data into tables to reduce redundancy. Data normalization can slow down updates because there are more tables to update, also creates longer task because there are more tables to join. Denormalized tables can repeat data and take up more space.
+- What causes data to be skewed: Skewness refers to a distortion or asymmetry that deviates from the symmetrical bell curve, or normal distribution, in a set of data. If the curve is shifted to the left or to the right, it is said to be skewed. Left skewed is negative (curve is further right), right skewed is positive (curve is further left towards low end). Causes is the median being off from the mean.
+- Data formats (avro, parquet): avro is row based, parquet is columnar. Parquet has high execution speed for Spark and uses less storage space compared to avro and json.  
+
 Values:
 `innovative`, `collaborative`, `sincere`, `passionate`, `playful`
 
-`The Band Manifesto`, `T Shaped Engineers`
+`The Band Manifesto`, `T Shaped Engineers`, `Drive and Growth`
+
+Mission: To unlock the potential of human creativity by giving a million creators the opportunity to live off their art and billions of fans the opportunity to enjoy and be inspired by it.
