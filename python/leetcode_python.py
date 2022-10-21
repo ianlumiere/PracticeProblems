@@ -1085,7 +1085,6 @@ def stopWords(text, k):
 
 #time complexity: O(list_in), space complexity: O(list_in)
 # sum_missing_most_common([1,2,1,3])
-
 def sum_missing_most_common(list_in):
     
     unique_elements = {}
@@ -1115,7 +1114,6 @@ def sum_missing_most_common(list_in):
     return sum - remove
 
 # get earliest letter that appears the most in a string
-
 def earliest(a):
     keys = {}
     max = 0

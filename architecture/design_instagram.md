@@ -79,22 +79,37 @@ Load Balancer ---> App Server (read) ---> Cache (Redis) <--,  V                 
     `-----------> App Server (write) --------------> Metadata DB ----filepath---> Object Storage (GCS)
                         `------upload image-----------------------------------------------^
 
-NGINX for Load Balancing
 
-App Engine (platform as a service, fully managed, auto scaling, serverless, host web apps at scale, can scale to 0 if no requests) or Compute Engine (infra as a a service, costs less, more flexibility, harder to use) for Servers
+- `App Engine` (platform as a service, fully managed, auto scaling, serverless, host web apps at scale, can scale to 0 if no requests) or `Compute Engine` (infra as a a service, costs less, more flexibility, harder to use) for Servers
+- `NGINX` for Load Balancing
+- `Pub/Sub` for Queue (push or pull, replaces Kafka)
+- `Dataflow` for Pipelines
+- `Dataproc` for Spark
+- `BigTable` (time series or transactions) or `Firestore` for NoSQL
+- `Cloud SQL` MySQL for OLTP
+- `BigQuery` for OLAP
+- `GCS` for storage
+- `Datalab` for Jupyter Notebooks
+- `Data Studio` for BI 
+- `Cloud Composer` or `Airflow` for Orchestration
 
-Pub/Sub for Queue (push or pull, replaces Kafka)
+Issues to Consider:
+- `Latency`: Network latency is the amount of time it takes for a data packet to go from one place to another. Use of a CDN (content delivery network) is a major step towards reducing latency. A CDN caches static content and serves it to users. (The Cloudflare CDN makes it possible to cache dynamic content as well with Cloudflare Workers.) CDN servers are distributed in multiple locations so that content is stored closer to end users and does not need to travel as far to reach them. This means that loading a webpage will take less time, improving website speed and performance. A webpage can be configured to load the above-the-fold area of a page first so that users can begin interacting with the page even before it finishes loading (above the fold refers to what appears in a browser window before the user scrolls down). Webpages can also load assets only as they are needed, using a technique known as lazy loading. These approaches do not actually improve network latency, but they do improve the user's perception of page speed. Sometimes, network "latency" (slow network performance) is caused by issues on the user's side, not the server side (slow internet or bad connection). Latency, bandwidth, and throughput are all interrelated, but they all measure different things. Bandwidth is the maximum amount of data that can pass through the network at any given time. Throughput is the average amount of data that actually passes through over a given period of time. Throughput is not necessarily equivalent to bandwidth, because it is affected by latency and other factors. Latency is a measurement of time, not of how much data is downloaded over time.
+- `Eventual Consistency`: Eventual Consistency is a guarantee that when an update is made in a distributed database, that update will eventually be reflected in all nodes that store the data, resulting in the same response every time the data is queried. A key benefit of an eventually consistent database is that it supports the high availability model of NoSQL. Eventually consistent databases prioritize availability over strong consistency. Eventual consistency in microservices can support an always-available API that must be responsive, even if the query results may occasionally be missing the latest commit. A DBMS using the ACID model expects a unit of work to be atomic. It is all-or-nothing. While that unit of work is being done, the records or tables affected may be locked. Distributed databases with a BASE model give high availability. The records stay available, but once the transaction has completed across a majority of nodes, the transaction is deemed successful. Data replication across all nodes can take a little more time, but the data in all nodes will become consistent eventually. Once the transaction is deemed successful, queries for the data will consistently provide the updated data, even before data replication reaches the last few nodes. So, SQL is consistent, whereas NoSQL is eventually consistent.
+- `Idempotence`: Running a data pipeline multiple times with the same input will always produce the same output. A common way to make your data pipeline idempotent is to use the delete-write pattern. As the name implies, the pipeline will first delete the existing data before writing new data. Be very careful to only delete data that the data pipeline will re-create. OVERWRITE is safer than delete, write and most libraries offer an overwrite option (Snowflake and Spark included). Idempotency prevents duplicates, removes stale data, saves on data storage cost.
 
-Dataflow for Pipelines
+ACID (SQL)
+- `Atomicity`: if transaction fails at any point, the entire operation rolls back
+- `Consistency`: the database remains structurally sound with every transaction
+- `Isolation`: each transaction is independent of any other transaction
+- `Durability`: all transaction results are permanently preserved
 
-Dataproc for Spark
+BASE (NoSQL)
+- `Basic Availability`: data is available most of the time, even during a partial system failure.
+- `Soft state`: replicas are not consistent all the time.
+- `Eventual consistency`: data will become consistent at some point in time, with no guarantee when.
 
-BigTable (time series or transactions) or Firestore for NoSQL
+Values:
+`innovative`, `collaborative`, `sincere`, `passionate`, `playful`
 
-Cloud SQL MySQL for OLTP
-
-BigQuery for OLAP
-
-GCS for storage
-
-Datalab for Jupyter Notebooks
+`The Band Manifesto`, `T Shaped Engineers`
