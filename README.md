@@ -47,4 +47,5 @@ O(1)   O(log n)   O(n)   O(n log n)   O(n^2)   O(2^n)   O(n!)
 Constantly think out loud, including talking about what you are not doing and why.
 Be sure to test your code, not just your algorithm (this will help you catch bugs).
 When nearing the end of a test, make sure everything compiles and write notes if you
-cannot finish in time. Do not let it auto submit!
+cannot finish in time. Do not let it auto submit! Split into multiple days if possible.
+Check guide and sources for topics.
