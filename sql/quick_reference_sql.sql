@@ -224,3 +224,16 @@ SELECT
         WHEN num_reviews > 10 THEN 'very_active'
     END AS activity_level
 FROM reviews
+
+-- 22 get users who have attended an event 3 consecutive years in a row
+SELECT DISTINCT
+    name
+FROM (
+    SELECT
+        name,
+        year,
+        LAG(year, 2) OVER (PARTITION BY name ORDER BY year) AS previous_2_year
+    FROM participation
+) a
+WHERE year - previous_2_year = 2 -- we know if there is a difference of 2 between curent year
+-- and the year of 2 entries before, then they have a 3 year block
